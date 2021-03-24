@@ -1,4 +1,4 @@
 export enum TriggerEvent {
-    WRITE = "WRITE",
-    DELETE = "DELETE"
+  WRITE = 'WRITE',
+  DELETE = 'DELETE'
 }

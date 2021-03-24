@@ -1,3 +1,3 @@
 export enum Provider {
-    GCP = 'GCP'
+  GCP = 'GCP'
 }

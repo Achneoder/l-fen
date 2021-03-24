@@ -21,7 +21,7 @@
     "@typescript-eslint/parser": "^4.19.0",
     "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.1.0",
-    "husky": "^5.2.0",
+    "husky": "^4.3.8",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
     "typescript": "^4.2.3"
@@ -36,6 +36,9 @@
     }
   },
   "lint-staged": {
-    "*.{ts,js}": "eslint --fix"
+    "*.{ts,js}": [
+      "prettier -w",
+      "eslint --fix"
+    ]
   }
 }
