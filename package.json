@@ -2,9 +2,13 @@
   "name": "fen",
   "version": "0.0.1",
   "description": "sandbox to simulate full serverless function environment",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "fen-boot": "./lib/service/bootloader.js",
+    "fen": "./lib/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +21,8 @@
   },
   "homepage": "https://github.com/Achneoder/fen#readme",
   "devDependencies": {
+    "@types/node": "^14.14.35",
+    "@types/yargs": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "eslint": "^7.22.0",
@@ -28,7 +34,10 @@
   },
   "dependencies": {
     "chokidar": "^3.5.1",
-    "nock": "^13.0.11"
+    "glob": "^7.1.6",
+    "nock": "^13.0.11",
+    "sinon": "^10.0.0",
+    "yargs": "^16.2.0"
   },
   "husky": {
     "hooks": {
