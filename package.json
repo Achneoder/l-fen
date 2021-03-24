@@ -1,0 +1,41 @@
+{
+  "name": "fen",
+  "version": "0.0.1",
+  "description": "sandbox to simulate full serverless function environment",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Achneoder/fen.git"
+  },
+  "author": "me@codingoncatnip.de",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Achneoder/fen/issues"
+  },
+  "homepage": "https://github.com/Achneoder/fen#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.19.0",
+    "@typescript-eslint/parser": "^4.19.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "husky": "^5.2.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "chokidar": "^3.5.1",
+    "nock": "^13.0.11"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js}": "eslint --fix"
+  }
+}
