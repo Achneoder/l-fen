@@ -106,4 +106,8 @@ dist
 # Jetbrains IDE
 .idea
 
-lib
+
+# Project specific folders and files
+lib/
+test-buckets/
+.fenrc.json

@@ -2,13 +2,15 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "commonjs",
+    "esModuleInterop": true,
     "lib": ["es2017"],
     "moduleResolution": "node",
     "rootDir": "src",
     "outDir": "lib",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "removeComments": true
+    "removeComments": true,
+    "sourceMap": true
   },
   "include": ["src/**/*"],
   "exclude": ["lib", "node_modules", "test", "**/*spec.ts"]
