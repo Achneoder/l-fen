@@ -1,10 +1,16 @@
 import * as fs from 'fs';
 import {Config} from "./types/config.interface";
 
+let config: Config;
+
 /**
  *
  * @param file
+ * @param forceReload
  */
-export function parseConfig(file = '.fenrc.json'): Config {
-    return JSON.parse(fs.readFileSync(file).toString())
+export function getConfig(file = '.fenrc.json', forceReload = false): Config {
+  if (!config || forceReload) {
+    config = JSON.parse(fs.readFileSync(file).toString())
+  }
+  return config;
 }

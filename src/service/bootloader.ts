@@ -1,19 +1,18 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { BootloaderArgs } from '../types/bootloader-args.interface';
-import { Config, ServiceConfig } from '../types/config.interface';
-import { parseConfig } from '../parser';
+import { ServiceConfig } from '../types/config.interface';
+import { getConfig } from '../parser';
 import { mockEndoints } from '../api/gcloud/bucket.api';
 import { BucketEvent } from '../types/gcloud.interface';
 import { Provider } from '../types/provider.enum';
 
-export let config: Config;
-
 async function bootService() {
   //@ts-ignore
   const argv: BootloaderArgs = yargs(hideBin(process.argv)).argv;
+  console.log('called with args', JSON.stringify(argv));
 
-  config = parseConfig(argv.config);
+  const config = getConfig(argv.config);
   const event: BucketEvent = JSON.parse(argv.event);
 
   mockEndoints();

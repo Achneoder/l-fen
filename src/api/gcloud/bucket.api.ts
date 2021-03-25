@@ -1,5 +1,4 @@
 import { GcpObject, ObjectListQuery } from '../../types/gcloud.interface';
-import { config } from '../../service/bootloader';
 import * as glob from 'glob';
 import * as fs from 'fs';
 import { Stats } from 'fs';
@@ -8,8 +7,10 @@ import { getMetadata, saveMetadata } from '../metadata';
 import { URL } from 'url';
 import * as md5File from 'md5-file';
 import { calculate } from '../../helper/crc32c';
+import { getConfig } from '../../parser';
 
 export async function list(bucket: string, query?: ObjectListQuery): Promise<Array<GcpObject>> {
+  const config = getConfig();
   const bucketPath =
     (config.bucketLocation.endsWith('/') ? config.bucketLocation : config.bucketLocation + '/') + bucket + '/';
   const pathGlob = `${bucketPath}${query?.prefix ? query.prefix + '/' : ''}**/*`;
@@ -52,6 +53,7 @@ async function getFileAsGcpObject(bucket: string, localFilePath: string): Promis
 }
 
 export function mockEndoints(): void {
+  const config = getConfig();
   // mock listing files
   // see https://cloud.google.com/storage/docs/json_api/v1/objects/list
   nock('https://storage.googleapis.com', { encodedQueryParams: true })
@@ -104,8 +106,6 @@ export function mockEndoints(): void {
       // returns the patrh containing bucket and filename: ":bucket/o/:filename"
       const bucketAndFilename = uri.replace('/upload/storage/v1/b/', '').split('?')[0];
       const bucket = bucketAndFilename.split('/o')[0];
-      console.log('::::::::::::::::::::::::::::::::::::::::::::::::');
-
       const parsedUri = new URL(this.req.path, 'https://storage.googleapis.com');
       const fileName = decodeURIComponent(parsedUri.searchParams.get('name'));
       const uploadType = parsedUri.searchParams.get('uploadType');

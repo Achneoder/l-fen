@@ -1,11 +1,12 @@
-import { config } from '../service/bootloader';
 import * as fs from 'fs';
+import { getConfig } from '../parser';
 
 export const fenMetadataFolder = '.__fen';
 
 function getSanitizedFilePath(bucket: string, fileName: string): string {
+  const config = getConfig();
   let path = config.bucketLocation.endsWith('/') ? config.bucketLocation : config.bucketLocation + '/';
-  return (path += `${fenMetadataFolder}/${bucket}/${fileName}`);
+  return path + `${fenMetadataFolder}/${bucket}/${fileName}`;
 }
 
 /**
