@@ -4,4 +4,5 @@ export interface BootloaderArgs {
   entryPoint: string;
   name: string;
   config?: string;
+  base64?: boolean;
 }

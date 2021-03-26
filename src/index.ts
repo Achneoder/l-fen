@@ -37,7 +37,7 @@ function exec() {
 
       bucketServices
         .filter((service: BucketService) => service.canBeExecuted(event))
-        .forEach((service: BucketService) => service.exec(event));
+        .forEach((service: BucketService) => service.exec(event).catch((err) => console.error(err)));
     });
     // .on('change', path => log(`File ${path} has been changed`))
     // .on('unlink', path => log(`File ${path} has been removed`));
@@ -45,7 +45,9 @@ function exec() {
 
   if (httpServices.length) {
     const app = express();
-    const port = 3000;
+    const port = config.port;
+
+    console.log('starting fen proxy');
 
     app.use((req: Request, res: Response) => {
       const serviceRequest: HttpServiceRequest = {
@@ -61,11 +63,16 @@ function exec() {
       } else if (targetHttpFunction.length > 1) {
         console.error(`more then one endpoint functions defined for ${req.url}`);
       } else {
-        targetHttpFunction[0].exec(serviceRequest).then((response: HttpServiceResponse) => {
-          const expressResponse = res.status(response.status);
-          Object.entries(response.headers).forEach(([header, value]) => expressResponse.setHeader(header, value));
-          expressResponse.send(response.body);
-        });
+        targetHttpFunction[0]
+          .exec(serviceRequest)
+          .then((response: HttpServiceResponse) => {
+            const expressResponse = res.status(response.status);
+            Object.entries(response.headers).forEach(([header, value]) => expressResponse.setHeader(header, value));
+            expressResponse.send(response.body);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       }
     });
 

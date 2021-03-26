@@ -19,6 +19,6 @@ export interface BucketFunctionConfig {
 
 export interface Config {
   bucketLocation: string;
-  port: string;
+  port: number;
   services: Array<ServiceConfig>;
 }

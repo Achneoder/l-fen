@@ -10,13 +10,13 @@ export class FunctionRequest implements HttpServiceRequest {
 
   constructor(private readonly event: HttpServiceRequest) {
     this.headers = event.headers;
-    this.body = event.headers;
+    this.body = event.body;
     this.query = event.query;
     this.url = event.url;
     this.method = event.method;
   }
 
   public get(header: string): string {
-    return this.headers[header];
+    return this.headers[header.toLowerCase()];
   }
 }

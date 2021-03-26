@@ -4,7 +4,9 @@
   "description": "sandbox to simulate full serverless function environment",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "start": "node lib/index.js"
   },
   "bin": {
     "fen-boot": "./lib/service/bootloader.js",

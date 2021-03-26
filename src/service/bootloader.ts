@@ -8,7 +8,6 @@ import { BucketEvent } from '../types/gcloud.interface';
 import { Provider } from '../types/provider.enum';
 import { TriggerType } from '../types/trigger-type.enum';
 import { HttpServiceRequest } from '../types/service-event.interface';
-import { Request } from 'express';
 import { FunctionResponse, FunctionResponseCallback } from '../helper/function-response';
 import { FunctionRequest } from '../helper/function-request';
 
@@ -25,16 +24,20 @@ async function bootService() {
   if (serviceConfig.triggerType === TriggerType.BUCKET) {
     await bootBucketService(argv, serviceConfig);
   }
+
+  if (serviceConfig.triggerType === TriggerType.HTTP) {
+    await bootHttpService(argv, serviceConfig);
+  }
 }
 
 async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfig): Promise<void> {
-  const event: HttpServiceRequest = JSON.parse(argv.event);
+  const event: HttpServiceRequest = JSON.parse(argv.base64 ? Buffer.from(argv.event, 'base64').toString() : argv.event);
   const responseCallback: FunctionResponseCallback = (response: FunctionResponse) => {
     console.log(
       JSON.stringify({
         headers: response.headers,
         body: response.body,
-        status: response.status
+        status: response.statusCode
       })
     );
   };
@@ -55,7 +58,7 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
 }
 
 async function bootBucketService(argv: BootloaderArgs, serviceConfig: ServiceConfig): Promise<unknown> {
-  const event: BucketEvent = JSON.parse(argv.event);
+  const event: BucketEvent = JSON.parse(argv.base64 ? Buffer.from(argv.event, 'base64').toString() : argv.event);
 
   const file = require(argv.path);
   const entryPoint = file[argv.entryPoint];

@@ -11,7 +11,9 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
       const args: Array<string> = [
         './lib/service/bootloader.js',
         '--event',
-        JSON.stringify(event),
+        Buffer.from(JSON.stringify(event)).toString('base64'),
+        '--base64',
+        'true',
         '--path',
         path.resolve(this.serviceConfig.path),
         '--entryPoint',
@@ -26,12 +28,20 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
           ...this.serviceConfig.envVars
         }
       });
-      spawnedProcess.stdout.on('data', (data) => this.logs.push(data.toString()));
+      spawnedProcess.stdout.on('data', (data) => {
+        console.log(data.toString());
+        this.logs.push(data.toString());
+      });
       spawnedProcess.stderr.on('data', (data) => this.logs.push(data.toString()));
       spawnedProcess.on('close', () => {
+        const lastLog = this.logs[this.logs.length - 1];
         if (this.logs.length > 0) {
-          const response: HttpServiceResponse = JSON.parse(this.logs[this.logs.length - 1]);
-          resolve(response);
+          try {
+            const response: HttpServiceResponse = JSON.parse(lastLog);
+            resolve(response);
+          } catch (err) {
+            reject(`last log was no JSON: ${lastLog}`);
+          }
         } else {
           reject(`${this.serviceConfig.name} failed - no response`);
         }
