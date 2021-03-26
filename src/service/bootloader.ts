@@ -27,9 +27,9 @@ async function bootService() {
     process.env.GOOGLE_APPLICATION_CREDENTIALS = './assets/gcp_service_account.json';
   }
   await entryPoint(event);
+  console.log(argv.name, 'finished');
 }
 
-bootService()
-  .catch((err) => {
-    console.error(err);
-  });
+bootService().catch((err) => {
+  console.error(err);
+});

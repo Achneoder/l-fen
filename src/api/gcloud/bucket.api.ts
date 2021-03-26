@@ -22,6 +22,17 @@ export async function list(bucket: string, query?: ObjectListQuery): Promise<Arr
 }
 
 /**
+ * Extract parameters from URI
+ * @param uri
+ * @param positions
+ * @returns
+ */
+function extractFromUri(uri: string, positions: Array<number>): Array<string> {
+  const splitUri = uri.split('?')[0].split('/');
+  return positions.map((position: number) => splitUri[position]);
+}
+
+/**
  * Based on the bucket and the path to the local file, a mapped {@link GcpObject} is returned.
  *
  * @param bucket Name of the bucket
@@ -61,7 +72,7 @@ export function mockEndoints(): void {
     .get(/^\/storage\/v1\/b\/[^/]+\/o$/)
     .query(true)
     .reply(200, function (uri: string, body: nock.Body, cb) {
-      const bucket = uri.replace('/storage/v1/b/', '').split('?')[0].slice(0, -2);
+      const [bucket] = extractFromUri(uri, [4]);
       const parsedUri = new URL(this.req.path, 'https://storage.googleapis.com');
       list(bucket, parsedUri.searchParams as ObjectListQuery).then((files: Array<GcpObject>) => {
         cb(null, {
@@ -78,19 +89,17 @@ export function mockEndoints(): void {
     .get(/^\/storage\/v1\/b\/[^/]+\/o\/[^/]+$/)
     .query(true)
     .reply(200, function (uri: string, body: nock.Body, cb) {
-      // returns the patrh containing bucket and filename: ":bucket/o/:filename"
-      const bucketAndFilename = uri.replace('/storage/v1/b/', '').split('?')[0];
-      const bucket = bucketAndFilename.split('/o/')[0];
-      const fileName = decodeURIComponent(bucketAndFilename.split('/o/')[1]);
+      const [bucket, fileName] = extractFromUri(uri, [4, 6]);
+      const decodedFileName = decodeURIComponent(fileName);
       const bucketPath =
         (config.bucketLocation.endsWith('/') ? config.bucketLocation : config.bucketLocation + '/') + bucket + '/';
 
       const parsedUri = new URL(this.req.path, 'https://storage.googleapis.com');
       // ?alt=media indicates that the file should be returned as a stream
       if (parsedUri.searchParams.get('alt') === 'media') {
-        cb(null, fs.readFileSync(bucketPath + fileName));
+        cb(null, fs.readFileSync(bucketPath + decodedFileName));
       } else {
-        getFileAsGcpObject(bucket, bucketPath + fileName).then((obj: GcpObject) => {
+        getFileAsGcpObject(bucket, bucketPath + decodedFileName).then((obj: GcpObject) => {
           cb(null, obj);
         });
       }
@@ -103,9 +112,7 @@ export function mockEndoints(): void {
     .post(/^\/upload\/storage\/v1\/b\/[^/]+\/o$/)
     .query(true)
     .reply(function (uri: string, body: nock.Body) {
-      // returns the patrh containing bucket and filename: ":bucket/o/:filename"
-      const bucketAndFilename = uri.replace('/upload/storage/v1/b/', '').split('?')[0];
-      const bucket = bucketAndFilename.split('/o')[0];
+      const [bucket] = extractFromUri(uri, [5]);
       const parsedUri = new URL(this.req.path, 'https://storage.googleapis.com');
       const fileName = decodeURIComponent(parsedUri.searchParams.get('name'));
       const uploadType = parsedUri.searchParams.get('uploadType');
@@ -122,9 +129,7 @@ export function mockEndoints(): void {
     .put(/^\/upload\/storage\/v1\/b\/[^/]+\/o$/)
     .query(true)
     .reply(200, function (uri: string, body: nock.Body, cb) {
-      // returns the patrh containing bucket and filename: ":bucket/o/:filename"
-      const bucketAndFilename = uri.replace('/upload/storage/v1/b/', '').split('?')[0];
-      const bucket = bucketAndFilename.split('/o')[0];
+      const [bucket] = extractFromUri(uri, [5]);
       const bucketPath =
         (config.bucketLocation.endsWith('/') ? config.bucketLocation : config.bucketLocation + '/') + bucket + '/';
 
