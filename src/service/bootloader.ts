@@ -50,8 +50,8 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
 
   process.env = { ...process.env, ...(serviceConfig.envVars || {}) };
 
-  if (serviceConfig.provider === Provider.GCP) {
-    process.env.GOOGLE_APPLICATION_CREDENTIALS = './assets/gcp_service_account.json';
+  if (getConfig().provider.name === Provider.GCP) {
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = './.fen/gcp_service_account.json';
   }
 
   await entryPoint(functionRequest, functionResponse);
@@ -65,8 +65,8 @@ async function bootBucketService(argv: BootloaderArgs, serviceConfig: ServiceCon
 
   process.env = { ...process.env, ...(serviceConfig.envVars || {}) };
 
-  if (serviceConfig.provider === Provider.GCP) {
-    process.env.GOOGLE_APPLICATION_CREDENTIALS = './assets/gcp_service_account.json';
+  if (getConfig().provider.name === Provider.GCP) {
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = './.fen/gcp_service_account.json';
   }
   // to make sure that bootBucketService returns a Promise, we call await on the entryPoint, even if it does not return a Promise
   return await entryPoint(event);

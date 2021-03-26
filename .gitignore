@@ -111,3 +111,4 @@ dist
 lib/
 test-buckets/
 .fenrc.json
+.fen

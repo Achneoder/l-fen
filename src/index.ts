@@ -8,9 +8,20 @@ import { BucketServiceEvent, HttpServiceRequest, HttpServiceResponse } from './t
 import { TriggerEvent } from './types/trigger-event.enum';
 import { HttpService } from './service/http-service';
 import express, { Request, Response } from 'express';
+import { Provider } from './types/provider.enum';
+import fs from 'fs';
 
 function exec() {
   const config = getConfig();
+
+  if (config.provider.name === Provider.GCP) {
+    const serviceAccountFile = require('../assets/gcp_service_account.json');
+    fs.mkdirSync('./.fen');
+    fs.writeFileSync(
+      '.fen/gcp_service_account.json',
+      JSON.stringify({ ...serviceAccountFile, project_id: config.provider.project })
+    );
+  }
 
   const bucketServices = config.services
     .filter((service: ServiceConfig) => service.triggerType === TriggerType.BUCKET)
