@@ -9,7 +9,6 @@ import {TriggerEvent} from "./types/trigger-event.enum";
 
 function exec() {
   const config = getConfig();
-  console.log(config);
 
   const mappedBucketFunctions = config.services.filter((service: ServiceConfig) => service.triggerType === TriggerType.BUCKET)
     .map((service: ServiceConfig) => new BucketService(service));
@@ -24,7 +23,6 @@ function exec() {
     });
     watcher
       .on('add', (path: string) => {
-        console.log(path);
         const event: BucketServiceEvent = {
           bucket: path.split('/')[1],
           name: path.split('/').slice(2).join('/'),

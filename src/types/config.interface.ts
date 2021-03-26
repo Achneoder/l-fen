@@ -7,9 +7,14 @@ export interface ServiceConfig {
   path: string;
   entryPoint: string;
   triggerType: TriggerType;
+  triggerConfig: BucketFunctionConfig;
   provider: Provider;
   envVars: { [key: string]: string };
-  events?: Array<TriggerEvent>;
+}
+
+export interface BucketFunctionConfig {
+  events: Array<TriggerEvent>;
+  targetBucket: string;
 }
 
 export interface Config {

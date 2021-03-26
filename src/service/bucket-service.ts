@@ -3,12 +3,14 @@ import { TriggerType } from '../types/trigger-type.enum';
 import { BucketServiceEvent } from '../types/service-event.interface';
 import { spawn } from 'child_process';
 import { BucketEvent } from '../types/gcloud.interface';
+import path from 'path';
 
 export class BucketService extends Service<BucketServiceEvent> {
   public exec(event: BucketServiceEvent): void {
     if (
       this.serviceConfig.triggerType === TriggerType.BUCKET &&
-      (this.serviceConfig.events || []).includes(event.eventType)
+      (this.serviceConfig.triggerConfig.events || []).includes(event.eventType) &&
+      this.serviceConfig.triggerConfig.targetBucket === event.bucket
     ) {
       const bucketEvent: BucketEvent = { name: event.name, bucket: event.bucket };
       const args: Array<string> = [
@@ -16,7 +18,7 @@ export class BucketService extends Service<BucketServiceEvent> {
         '--event',
         JSON.stringify(bucketEvent),
         '--path',
-        this.serviceConfig.path,
+        path.resolve(this.serviceConfig.path),
         '--entryPoint',
         this.serviceConfig.entryPoint,
         '--name',

@@ -10,7 +10,7 @@ import { Provider } from '../types/provider.enum';
 async function bootService() {
   //@ts-ignore
   const argv: BootloaderArgs = yargs(hideBin(process.argv)).argv;
-  console.log('called with args', JSON.stringify(argv));
+  console.log('executing with args', JSON.stringify(argv));
 
   const config = getConfig(argv.config);
   const event: BucketEvent = JSON.parse(argv.event);
@@ -27,13 +27,9 @@ async function bootService() {
     process.env.GOOGLE_APPLICATION_CREDENTIALS = './assets/gcp_service_account.json';
   }
   await entryPoint(event);
-  return argv;
 }
 
 bootService()
-  .then((args: BootloaderArgs) => {
-    console.log('executed', args);
-  })
   .catch((err) => {
     console.error(err);
   });

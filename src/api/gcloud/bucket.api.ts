@@ -111,7 +111,6 @@ export function mockEndoints(): void {
       const uploadType = parsedUri.searchParams.get('uploadType');
       const uploadId = parsedUri.searchParams.get('upload_id');
       const location = `https://storage.googleapis.com${this.req.path}&upload_id=${encodeURIComponent(fileName)}`;
-      console.log('location', location);
       if (uploadType === 'resumable' && !uploadId) {
         saveMetadata(bucket, fileName, body);
         return [200, {}, { 'X-GUploader-UploadID': parsedUri.searchParams.get('name'), Location: location }];
@@ -133,9 +132,7 @@ export function mockEndoints(): void {
       const fileName = decodeURIComponent(parsedUri.searchParams.get('name'));
       const uploadType = parsedUri.searchParams.get('uploadType');
       const uploadId = parsedUri.searchParams.get('upload_id');
-      console.log('upload to', bucket + '/' + fileName);
       if (uploadType === 'resumable' && uploadId) {
-        console.log(body);
         const filePath = bucketPath + fileName;
         const splitPath = filePath.split('/');
         splitPath.pop();
