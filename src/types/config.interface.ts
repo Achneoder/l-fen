@@ -7,7 +7,7 @@ export interface ServiceConfig {
   path: string;
   entryPoint: string;
   triggerType: TriggerType;
-  triggerConfig: BucketFunctionConfig;
+  triggerConfig?: BucketFunctionConfig;
   provider: Provider;
   envVars: { [key: string]: string };
 }
@@ -19,5 +19,6 @@ export interface BucketFunctionConfig {
 
 export interface Config {
   bucketLocation: string;
+  port: string;
   services: Array<ServiceConfig>;
 }

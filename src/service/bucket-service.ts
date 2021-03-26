@@ -5,34 +5,36 @@ import { spawn } from 'child_process';
 import { BucketEvent } from '../types/gcloud.interface';
 import path from 'path';
 
-export class BucketService extends Service<BucketServiceEvent> {
-  public exec(event: BucketServiceEvent): void {
-    if (
+export class BucketService extends Service<BucketServiceEvent, void> {
+  public async exec(event: BucketServiceEvent): Promise<void> {
+    const bucketEvent: BucketEvent = { name: event.name, bucket: event.bucket };
+    const args: Array<string> = [
+      './lib/service/bootloader.js',
+      '--event',
+      JSON.stringify(bucketEvent),
+      '--path',
+      path.resolve(this.serviceConfig.path),
+      '--entryPoint',
+      this.serviceConfig.entryPoint,
+      '--name',
+      this.serviceConfig.name
+    ];
+    console.log(`-- executing ${this.serviceConfig.name} --`);
+    spawn('node', args, {
+      env: {
+        ...process.env,
+        ...this.serviceConfig.envVars
+      }
+    })
+      .stdout.on('data', (data) => console.log(data.toString()))
+      .on('error', (err) => console.log(err));
+  }
+
+  public canBeExecuted(event: BucketServiceEvent): boolean {
+    return (
       this.serviceConfig.triggerType === TriggerType.BUCKET &&
       (this.serviceConfig.triggerConfig.events || []).includes(event.eventType) &&
       this.serviceConfig.triggerConfig.targetBucket === event.bucket
-    ) {
-      const bucketEvent: BucketEvent = { name: event.name, bucket: event.bucket };
-      const args: Array<string> = [
-        './lib/service/bootloader.js',
-        '--event',
-        JSON.stringify(bucketEvent),
-        '--path',
-        path.resolve(this.serviceConfig.path),
-        '--entryPoint',
-        this.serviceConfig.entryPoint,
-        '--name',
-        this.serviceConfig.name
-      ];
-      console.log(`-- executing ${this.serviceConfig.name} --`);
-      spawn('node', args, {
-        env: {
-          ...process.env,
-          ...this.serviceConfig.envVars
-        }
-      })
-        .stdout.on('data', (data) => console.log(data.toString()))
-        .on('error', (err) => console.log(err));
-    }
+    );
   }
 }
