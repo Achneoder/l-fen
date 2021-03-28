@@ -146,14 +146,4 @@ export function mockEndoints(): void {
         getFileAsGcpObject(bucket, filePath).then((obj: GcpObject) => cb(null, obj));
       }
     });
-
-  // mock the auth api
-  nock('https://www.googleapis.com', { encodedQueryParams: true })
-    .persist()
-    .post('/oauth2/v4/token', () => true)
-    .reply(200, () => {
-      return {};
-    });
-
-  // nock.recorder.rec();
 }

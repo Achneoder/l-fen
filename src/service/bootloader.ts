@@ -4,12 +4,14 @@ import { BootloaderArgs } from '../types/bootloader-args.interface';
 import { ServiceConfig } from '../types/config.interface';
 import { getConfig } from '../parser';
 import { mockEndoints as mockBucketEndpoints } from '../api/gcloud/bucket.api';
+import { mockEndoints as mockAuthEndpoints } from '../api/gcloud/auth.api';
 import { BucketEvent } from '../types/gcloud.interface';
 import { Provider } from '../types/provider.enum';
 import { TriggerType } from '../types/trigger-type.enum';
 import { HttpServiceRequest } from '../types/service-event.interface';
 import { FunctionResponse, FunctionResponseCallback } from '../helper/function-response';
 import { FunctionRequest } from '../helper/function-request';
+import nock from 'nock';
 
 async function bootService() {
   //@ts-ignore
@@ -20,6 +22,7 @@ async function bootService() {
   const serviceConfig = config.services.find((service: ServiceConfig) => service.name === argv.name);
   // mock all endpoints used by google-cloud
   mockBucketEndpoints();
+  mockAuthEndpoints();
 
   if (serviceConfig.triggerType === TriggerType.BUCKET) {
     await bootBucketService(argv, serviceConfig);
@@ -31,6 +34,8 @@ async function bootService() {
 }
 
 async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfig): Promise<void> {
+  // nock.recorder.rec();
+
   const event: HttpServiceRequest = JSON.parse(argv.base64 ? Buffer.from(argv.event, 'base64').toString() : argv.event);
   const responseCallback: FunctionResponseCallback = (response: FunctionResponse) => {
     console.log(
