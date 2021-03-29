@@ -28,7 +28,8 @@ export interface GcpObject {
   timeCreated: string;
   updated: string;
   size: number;
-  metadata: Record<string, unknown>;
+  metadata?: Record<string, unknown>;
   md5Hash: string;
   crc32c: string;
+  [key: string]: unknown;
 }

@@ -16,7 +16,7 @@ function exec() {
 
   if (config.provider.name === Provider.GCP) {
     const serviceAccountFile = require('../assets/gcp_service_account.json');
-    fs.mkdirSync('./.fen');
+    fs.mkdirSync('./.fen', { recursive: true });
     fs.writeFileSync(
       '.fen/gcp_service_account.json',
       JSON.stringify({ ...serviceAccountFile, project_id: config.provider.project })
@@ -33,6 +33,7 @@ function exec() {
 
   if (bucketServices.length) {
     // Initialize watcher.
+    console.log('------- initializing file watcher in dir', config.bucketLocation, ' -------');
     const watcher = chokidar.watch(config.bucketLocation, {
       ignored: `${config.bucketLocation}/${fenMetadataFolder}/**/*`,
       persistent: true,
@@ -40,12 +41,15 @@ function exec() {
       awaitWriteFinish: true
     });
     watcher.on('add', (path: string) => {
+      console.log('filewrite detected in bucket', path);
+      if (process.platform === 'win32') {
+        path = path.replace(/\\/g, '/');
+      }
       const event: BucketServiceEvent = {
         bucket: path.split('/')[1],
         name: path.split('/').slice(2).join('/'),
         eventType: TriggerEvent.WRITE
       };
-
       bucketServices
         .filter((service: BucketService) => service.canBeExecuted(event))
         .forEach((service: BucketService) => service.exec(event).catch((err) => console.error(err)));
@@ -57,9 +61,10 @@ function exec() {
   if (httpServices.length) {
     const app = express();
     const port = config.port;
-
+    const bodyParser = require('body-parser');
     console.log('starting fen proxy');
 
+    app.use(bodyParser.json());
     app.use((req: Request, res: Response) => {
       const serviceRequest: HttpServiceRequest = {
         body: req.body,

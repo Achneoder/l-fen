@@ -9,9 +9,8 @@ import { BucketEvent } from '../types/gcloud.interface';
 import { Provider } from '../types/provider.enum';
 import { TriggerType } from '../types/trigger-type.enum';
 import { HttpServiceRequest } from '../types/service-event.interface';
-import { FunctionResponse, FunctionResponseCallback } from '../helper/function-response';
+import { FunctionResponse } from '../helper/function-response';
 import { FunctionRequest } from '../helper/function-request';
-import nock from 'nock';
 
 async function bootService() {
   //@ts-ignore
@@ -37,18 +36,8 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
   // nock.recorder.rec();
 
   const event: HttpServiceRequest = JSON.parse(argv.base64 ? Buffer.from(argv.event, 'base64').toString() : argv.event);
-  const responseCallback: FunctionResponseCallback = (response: FunctionResponse) => {
-    console.log(
-      JSON.stringify({
-        headers: response.headers,
-        body: response.body,
-        status: response.statusCode
-      })
-    );
-  };
-
   const functionRequest = new FunctionRequest(event);
-  const functionResponse = new FunctionResponse(responseCallback);
+  const functionResponse = new FunctionResponse();
 
   const file = require(argv.path);
   const entryPoint = file[argv.entryPoint];
@@ -60,6 +49,14 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
   }
 
   await entryPoint(functionRequest, functionResponse);
+
+  console.log(
+    JSON.stringify({
+      headers: functionResponse.headers,
+      body: functionResponse.body,
+      status: functionResponse.statusCode
+    })
+  );
 }
 
 async function bootBucketService(argv: BootloaderArgs, serviceConfig: ServiceConfig): Promise<unknown> {
