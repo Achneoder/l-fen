@@ -9,8 +9,9 @@ import { BucketEvent } from '../types/gcloud.interface';
 import { Provider } from '../types/provider.enum';
 import { TriggerType } from '../types/trigger-type.enum';
 import { HttpServiceRequest } from '../types/service-event.interface';
-import { FunctionResponse } from '../helper/function-response';
 import { FunctionRequest } from '../helper/function-request';
+import { BucketFunctionHandler, HttpFunctionHandler } from '../types/entrypoint.type';
+import request from 'supertest';
 
 async function bootService() {
   //@ts-ignore
@@ -37,24 +38,49 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
 
   const event: HttpServiceRequest = JSON.parse(argv.base64 ? Buffer.from(argv.event, 'base64').toString() : argv.event);
   const functionRequest = new FunctionRequest(event);
-  const functionResponse = new FunctionResponse();
 
   const file = require(argv.path);
-  const entryPoint = file[argv.entryPoint];
+  const entryPoint: HttpFunctionHandler = file[argv.entryPoint];
 
   process.env = { ...process.env, ...(serviceConfig.envVars || {}) };
 
   if (getConfig().provider.name === Provider.GCP) {
     process.env.GOOGLE_APPLICATION_CREDENTIALS = './.fen/gcp_service_account.json';
   }
+  const testRequest: request.SuperTest<request.Test> = request(entryPoint);
 
-  await entryPoint(functionRequest, functionResponse);
+  let scope: request.Test;
+  switch (functionRequest.method.toUpperCase()) {
+    case 'GET':
+      scope = testRequest.get(event.path).query(functionRequest.query);
+      break;
+    case 'POST':
+      scope = testRequest.post(event.path).send(functionRequest.body);
+      break;
+    case 'DELETE':
+      scope = testRequest.delete(event.path).query(functionRequest.body);
+      break;
+    case 'PUT':
+      scope = testRequest.put(event.path).send(functionRequest.body);
+      break;
+    case 'PATCH':
+      scope = testRequest.patch(event.path).send(functionRequest.body);
+      break;
+    default:
+      throw new Error('HTTP method not yet implemented');
+  }
+  Object.values(functionRequest.headers).forEach(([headerKey, headerValue]) => {
+    scope.set(headerKey, headerValue);
+  });
+
+  //@ts-ignore
+  const response: request.Response = await scope;
 
   console.log(
     JSON.stringify({
-      headers: functionResponse.headers,
-      body: functionResponse.body,
-      status: functionResponse.statusCode
+      headers: response.headers,
+      body: response.body,
+      status: response.statusCode
     })
   );
 }
@@ -63,7 +89,7 @@ async function bootBucketService(argv: BootloaderArgs, serviceConfig: ServiceCon
   const event: BucketEvent = JSON.parse(argv.base64 ? Buffer.from(argv.event, 'base64').toString() : argv.event);
 
   const file = require(argv.path);
-  const entryPoint = file[argv.entryPoint];
+  const entryPoint: BucketFunctionHandler = file[argv.entryPoint];
 
   process.env = { ...process.env, ...(serviceConfig.envVars || {}) };
 

@@ -71,7 +71,9 @@ function exec() {
         headers: req.headers as Record<string, string>,
         method: req.method,
         query: req.query as Record<string, string>,
-        url: req.url
+        url: req.url,
+        //FIXME: separate path from url
+        path: req.url
       };
       const targetHttpFunction = httpServices.filter((service: HttpService) => service.canBeExecuted(serviceRequest));
       if (!targetHttpFunction.length) {

@@ -16,9 +16,15 @@ export interface HttpServiceRequest extends Event {
   query: Record<string, string>;
   url: string;
   method: string;
+  path: string;
 }
 export interface HttpServiceResponse extends Event {
   headers: Record<string, string>;
   body: Record<string, unknown>;
   status: number;
+}
+
+export interface PubSubServiceEvent extends Event {
+  topic: string;
+  data: string;
 }
