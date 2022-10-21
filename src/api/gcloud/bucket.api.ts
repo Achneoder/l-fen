@@ -88,22 +88,40 @@ export function mockEndoints(): void {
     .persist()
     .get(/^\/storage\/v1\/b\/[^/]+\/o\/[^/]+$/)
     .query(true)
-    .reply(200, function (uri: string, body: nock.Body, cb) {
-      const [bucket, fileName] = extractFromUri(uri, [4, 6]);
-      const decodedFileName = decodeURIComponent(fileName);
-      const bucketPath =
-        (config.bucketLocation.endsWith('/') ? config.bucketLocation : config.bucketLocation + '/') + bucket + '/';
+    .reply(
+      200,
+      function (uri: string, body: nock.Body, cb) {
+        const [bucket, fileName] = extractFromUri(uri, [4, 6]);
+        const decodedFileName = decodeURIComponent(fileName);
+        const bucketPath =
+          (config.bucketLocation.endsWith('/') ? config.bucketLocation : config.bucketLocation + '/') + bucket + '/';
 
-      const parsedUri = new URL(this.req.path, 'https://storage.googleapis.com');
-      // ?alt=media indicates that the file should be returned as a stream
-      if (parsedUri.searchParams.get('alt') === 'media') {
-        cb(null, fs.readFileSync(bucketPath + decodedFileName));
-      } else {
-        getFileAsGcpObject(bucket, bucketPath + decodedFileName).then((obj: GcpObject) => {
-          cb(null, obj);
-        });
+        const req = this.req;
+        const parsedUri = new URL(req.path, 'https://storage.googleapis.com');
+        // ?alt=media indicates that the file should be returned as a stream
+        if (parsedUri.searchParams.get('alt') === 'media') {
+          calculate(bucketPath + decodedFileName).then((crc32cString: string) => {
+            req['crc32c'] = '0000' + crc32cString;
+            cb(null, fs.readFileSync(bucketPath + decodedFileName));
+          });
+        } else {
+          getFileAsGcpObject(bucket, bucketPath + decodedFileName).then((obj: GcpObject) => {
+            cb(null, obj);
+          });
+        }
+      },
+      {
+        'x-goog-hash': (req) => {
+          const parsedUri = new URL(req.path, 'https://storage.googleapis.com');
+          let crc32c = req['crc32c'];
+          // ?alt=media indicates that the file should be returned as a stream, if not, the meatadata are requested and no crc32c has to be calculated
+          if (parsedUri.searchParams.get('alt') !== 'media') {
+            crc32c = '';
+          }
+          return `crc32c=${crc32c}`;
+        }
       }
-    });
+    );
 
   // mock storing single file
   // see https://cloud.google.com/storage/docs/json_api/v1/objects/insert
