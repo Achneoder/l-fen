@@ -3,6 +3,10 @@ export interface BucketEvent {
   name: string;
 }
 
+export interface PubSubEvent {
+  data: string;
+}
+
 export interface ObjectListQuery {
   delimiter?: string;
   endOffset?: string;

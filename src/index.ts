@@ -10,6 +10,8 @@ import { HttpService } from './service/http-service';
 import express, { Request, Response } from 'express';
 import { Provider } from './types/provider.enum';
 import fs from 'fs';
+import { PubSubService } from './service/pubsub-service';
+import { ServiceCollection } from './service/service-collection';
 
 function exec() {
   const config = getConfig();
@@ -30,6 +32,14 @@ function exec() {
   const httpServices = config.services
     .filter((service: ServiceConfig) => service.triggerType === TriggerType.HTTP)
     .map((service: ServiceConfig) => new HttpService(service));
+
+  const pubSubServices = config.services
+    .filter((service: ServiceConfig) => service.triggerType === TriggerType.PUBSUB)
+    .map((service: ServiceConfig) => new PubSubService(service));
+
+  ServiceCollection.bucketServices.push(...bucketServices);
+  ServiceCollection.httpServices.push(...httpServices);
+  ServiceCollection.pubSubServices.push(...pubSubServices);
 
   if (bucketServices.length) {
     // Initialize watcher.
@@ -66,6 +76,7 @@ function exec() {
 
     app.use(bodyParser.json());
     app.use((req: Request, res: Response) => {
+      const path = '/' + req.url.split('/').slice(2).join('/');
       const serviceRequest: HttpServiceRequest = {
         body: req.body,
         headers: req.headers as Record<string, string>,
@@ -73,11 +84,11 @@ function exec() {
         query: req.query as Record<string, string>,
         url: req.url,
         //FIXME: separate path from url
-        path: req.url
+        path
       };
       const targetHttpFunction = httpServices.filter((service: HttpService) => service.canBeExecuted(serviceRequest));
       if (!targetHttpFunction.length) {
-        console.error(`no endpoint function defined for ${req.url}`);
+        console.error(`no endpoint function defined for ${req.url} - path ${serviceRequest.path}`);
       } else if (targetHttpFunction.length > 1) {
         console.error(`more then one endpoint functions defined for ${req.url}`);
       } else {

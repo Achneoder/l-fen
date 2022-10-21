@@ -3,6 +3,7 @@ import { TriggerType } from '../types/trigger-type.enum';
 import { BucketServiceEvent } from '../types/service-event.interface';
 import { spawn } from 'child_process';
 import { BucketEvent } from '../types/gcloud.interface';
+import { BucketFunctionConfig } from '../types/config.interface';
 import path from 'path';
 
 export class BucketService extends Service<BucketServiceEvent, void> {
@@ -31,10 +32,11 @@ export class BucketService extends Service<BucketServiceEvent, void> {
   }
 
   public canBeExecuted(event: BucketServiceEvent): boolean {
+    const triggerConfig = this.serviceConfig.triggerConfig as BucketFunctionConfig;
     return (
       this.serviceConfig.triggerType === TriggerType.BUCKET &&
-      (this.serviceConfig.triggerConfig.events || []).includes(event.eventType) &&
-      this.serviceConfig.triggerConfig.targetBucket === event.bucket
+      (triggerConfig.events || []).includes(event.eventType) &&
+      triggerConfig.targetBucket === event.bucket
     );
   }
 }

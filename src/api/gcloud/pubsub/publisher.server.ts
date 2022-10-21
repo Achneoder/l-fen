@@ -1,4 +1,6 @@
 import { grpc } from 'google-gax';
+import { PubSubService } from '../../../service/pubsub-service';
+import { ServiceCollection } from '../../../service/service-collection';
 import * as google_protobuf_empty_pb from '../../../types/protos/google/protobuf/empty_pb';
 import { IPublisherServer } from '../../../types/protos/google/pubsub/v1/pubsub_grpc_pb';
 import {
@@ -18,6 +20,7 @@ import {
   Topic,
   DetachSubscriptionResponse
 } from '../../../types/protos/google/pubsub/v1/pubsub_pb';
+import { PubSubServiceEvent } from '../../../types/service-event.interface';
 
 export class PublisherServer implements IPublisherServer {
   [name: string]: import('@grpc/grpc-js').UntypedHandleCall;
@@ -28,9 +31,21 @@ export class PublisherServer implements IPublisherServer {
   ): void {
     const topic = call.request.getTopic();
     const messages = call.request.getMessagesList();
+    const serviceEvents: Array<PubSubServiceEvent> = messages.map((message: PubsubMessage) => {
+      return {
+        topic: topic.split('/topics/').pop(),
+        data: Buffer.from(message.getData_asU8()).toString('base64')
+      };
+    });
+
+    serviceEvents.forEach((event: PubSubServiceEvent) => {
+      ServiceCollection.pubSubServices
+        .filter((service: PubSubService) => service.canBeExecuted(event))
+        .forEach((service: PubSubService) => service.exec(event).catch((err) => console.error(err)));
+    });
+
     messages.forEach((message: PubsubMessage) => {
-      //@ts-ignore
-      const buffer = Buffer.from(message.getData_asU8(), 'base64');
+      const buffer = Buffer.from(message.getData_asU8());
       console.log(`got message on topic ${topic}: ${buffer.toString()}`);
     });
     const response = new PublishResponse();

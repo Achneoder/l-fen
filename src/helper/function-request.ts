@@ -7,6 +7,7 @@ export class FunctionRequest implements HttpServiceRequest {
   query: Record<string, string>;
   url: string;
   method: string;
+  path: string;
 
   constructor(private readonly event: HttpServiceRequest) {
     this.headers = event.headers;
