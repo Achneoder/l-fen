@@ -12,11 +12,14 @@ import { HttpServiceRequest } from '../types/service-event.interface';
 import { FunctionRequest } from '../helper/function-request';
 import { BucketFunctionHandler, HttpFunctionHandler, PubSubFunctionHandler } from '../types/entrypoint.type';
 import request from 'supertest';
+import { Logger } from '../helper/logger';
 
 async function bootService() {
+  const logger = Logger.getLogger();
+
   //@ts-ignore
   const argv: BootloaderArgs = yargs(hideBin(process.argv)).argv;
-  console.log('executing with args', JSON.stringify(argv));
+  logger.verbose('executing with args %s', JSON.stringify(argv), { lable: 'bootService' });
 
   const config = getConfig(argv.config);
   const serviceConfig = config.services.find((service: ServiceConfig) => service.name === argv.name);
@@ -79,7 +82,7 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
 
   //@ts-ignore
   const response: request.Response = await scope;
-
+  // we need the plain JSON as a string in stdout, so we use the good ol' console.log
   console.log(
     JSON.stringify({
       headers: response.headers,
@@ -120,5 +123,5 @@ async function bootPubSubService(argv: BootloaderArgs, serviceConfig: ServiceCon
 }
 
 bootService().catch((err) => {
-  console.error(err);
+  Logger.getLogger().error(err);
 });

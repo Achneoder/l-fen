@@ -12,8 +12,10 @@ import { Provider } from './types/provider.enum';
 import fs from 'fs';
 import { PubSubService } from './service/pubsub-service';
 import { ServiceCollection } from './service/service-collection';
+import { Logger } from './helper/logger';
 
 function exec() {
+  const logger = Logger.getLogger();
   const config = getConfig();
 
   if (config.provider.name === Provider.GCP) {
@@ -43,7 +45,7 @@ function exec() {
 
   if (bucketServices.length) {
     // Initialize watcher.
-    console.log('------- initializing file watcher in dir', config.bucketLocation, ' -------');
+    logger.info('------- initializing file watcher in dir %s -------', config.bucketLocation, { label: 'exec' });
     const watcher = chokidar.watch(config.bucketLocation, {
       ignored: `${config.bucketLocation}/${fenMetadataFolder}/**/*`,
       persistent: true,
@@ -51,7 +53,7 @@ function exec() {
       awaitWriteFinish: true
     });
     watcher.on('add', (path: string) => {
-      console.log('filewrite detected in bucket', path);
+      logger.verbose('filewrite detected in bucket', path, { label: 'exec' });
       if (process.platform === 'win32') {
         path = path.replace(/\\/g, '/');
       }
@@ -62,7 +64,7 @@ function exec() {
       };
       bucketServices
         .filter((service: BucketService) => service.canBeExecuted(event))
-        .forEach((service: BucketService) => service.exec(event).catch((err) => console.error(err)));
+        .forEach((service: BucketService) => service.exec(event).catch((err) => logger.error(err, { label: 'exec' })));
     });
     // .on('change', path => log(`File ${path} has been changed`))
     // .on('unlink', path => log(`File ${path} has been removed`));
@@ -72,7 +74,7 @@ function exec() {
     const app = express();
     const port = config.port;
     const bodyParser = require('body-parser');
-    console.log('starting fen proxy');
+    logger.verbose('starting fen proxy on http://localhost:%s', port, { label: 'exec' });
 
     app.use(bodyParser.json());
     app.use((req: Request, res: Response) => {
@@ -88,9 +90,9 @@ function exec() {
       };
       const targetHttpFunction = httpServices.filter((service: HttpService) => service.canBeExecuted(serviceRequest));
       if (!targetHttpFunction.length) {
-        console.error(`no endpoint function defined for ${req.url} - path ${serviceRequest.path}`);
+        logger.error('no endpoint function defined for %s - path %s', req.url, serviceRequest.path, { label: 'exec' });
       } else if (targetHttpFunction.length > 1) {
-        console.error(`more then one endpoint functions defined for ${req.url}`);
+        logger.error('more than one endpoint functions defined for %s', req.url, { label: 'exec' });
       } else {
         targetHttpFunction[0]
           .exec(serviceRequest)
@@ -100,13 +102,13 @@ function exec() {
             expressResponse.send(response.body);
           })
           .catch((err) => {
-            console.error(err);
+            logger.error(err, { label: 'exec' });
           });
       }
     });
 
     app.listen(port, () => {
-      console.log(`fen listening at http://localhost:${port}`);
+      logger.info('------- http proxy listening on http://localhost:%s -------', port, { label: 'exec' });
     });
   }
 }

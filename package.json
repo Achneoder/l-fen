@@ -53,6 +53,7 @@
     "md5-file": "^5.0.0",
     "nock": "^13.0.11",
     "supertest": "^6.3.0",
+    "winston": "^3.8.2",
     "yargs": "^16.2.0"
   },
   "lint-staged": {

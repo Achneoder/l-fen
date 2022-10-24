@@ -5,9 +5,11 @@ import { spawn } from 'child_process';
 import { BucketEvent } from '../types/gcloud.interface';
 import { BucketFunctionConfig } from '../types/config.interface';
 import path from 'path';
+import { Logger } from '../helper/logger';
 
 export class BucketService extends Service<BucketServiceEvent, void> {
   public async exec(event: BucketServiceEvent): Promise<void> {
+    const logger = Logger.getLogger();
     const bucketEvent: BucketEvent = { name: event.name, bucket: event.bucket };
     const args: Array<string> = [
       './lib/service/bootloader.js',
@@ -20,15 +22,15 @@ export class BucketService extends Service<BucketServiceEvent, void> {
       '--name',
       this.serviceConfig.name
     ];
-    console.log(`-- executing ${this.serviceConfig.name} --`);
+    logger.info(`-- executing %s --`, this.serviceConfig.name, { label: 'BucketService:exec' });
     spawn('node', args, {
       env: {
         ...process.env,
         ...this.serviceConfig.envVars
       }
     })
-      .stdout.on('data', (data) => console.log(data.toString()))
-      .on('error', (err) => console.log(err));
+      .stdout.on('data', (data) => logger.info(data.toString(), { label: 'BucketService:exec' }))
+      .on('error', (err) => logger.error(err));
   }
 
   public canBeExecuted(event: BucketServiceEvent): boolean {

@@ -2,11 +2,13 @@ import { Service } from './service.abstract';
 import { HttpServiceRequest, HttpServiceResponse } from '../types/service-event.interface';
 import { spawn } from 'child_process';
 import path from 'path';
+import { Logger } from '../helper/logger';
 
 export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse> {
   private readonly logs: Array<string> = [];
 
   public exec(event: HttpServiceRequest): Promise<HttpServiceResponse> {
+    const logger = Logger.getLogger();
     return new Promise((resolve, reject) => {
       const args: Array<string> = [
         './lib/service/bootloader.js',
@@ -21,7 +23,7 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
         '--name',
         this.serviceConfig.name
       ];
-      console.log(`-- executing ${this.serviceConfig.name} --`);
+      logger.info(`-- executing %s --`, this.serviceConfig.name, { label: 'HttpService:exec' });
       const spawnedProcess = spawn('node', args, {
         env: {
           ...process.env,
@@ -29,7 +31,7 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
         }
       });
       spawnedProcess.stdout.on('data', (data) => {
-        console.log(data.toString());
+        logger.verbose(data.toString(), { label: 'HttpService:exec' });
         this.logs.push(data.toString());
       });
       spawnedProcess.stderr.on('data', (data) => this.logs.push(data.toString()));

@@ -1,4 +1,5 @@
 import { grpc } from 'google-gax';
+import { Logger } from '../../../helper/logger';
 import { PubSubService } from '../../../service/pubsub-service';
 import { ServiceCollection } from '../../../service/service-collection';
 import * as google_protobuf_empty_pb from '../../../types/protos/google/protobuf/empty_pb';
@@ -29,6 +30,8 @@ export class PublisherServer implements IPublisherServer {
     call: grpc.ServerUnaryCall<PublishRequest, PublishResponse>,
     callback: grpc.sendUnaryData<PublishResponse>
   ): void {
+    const logger = Logger.getLogger();
+
     const topic = call.request.getTopic();
     const messages = call.request.getMessagesList();
     const serviceEvents: Array<PubSubServiceEvent> = messages.map((message: PubsubMessage) => {
@@ -41,12 +44,14 @@ export class PublisherServer implements IPublisherServer {
     serviceEvents.forEach((event: PubSubServiceEvent) => {
       ServiceCollection.pubSubServices
         .filter((service: PubSubService) => service.canBeExecuted(event))
-        .forEach((service: PubSubService) => service.exec(event).catch((err) => console.error(err)));
+        .forEach((service: PubSubService) =>
+          service.exec(event).catch((err) => logger.error(err, { label: 'PublisherServer:publish' }))
+        );
     });
 
     messages.forEach((message: PubsubMessage) => {
       const buffer = Buffer.from(message.getData_asU8());
-      console.log(`got message on topic ${topic}: ${buffer.toString()}`);
+      logger.verbose(`got message on topic %s: %s`, topic, buffer.toString(), { label: 'PublisherServer:publish' });
     });
     const response = new PublishResponse();
     callback(null, response);

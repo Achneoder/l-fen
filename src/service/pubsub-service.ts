@@ -3,9 +3,12 @@ import { PubSubServiceEvent } from '../types/service-event.interface';
 import { Service } from './service.abstract';
 import path from 'path';
 import { spawn } from 'child_process';
+import { Logger } from '../helper/logger';
 
 export class PubSubService extends Service<PubSubServiceEvent, void> {
   public async exec(event: PubSubServiceEvent): Promise<void> {
+    const logger = Logger.getLogger();
+
     const args: Array<string> = [
       './lib/service/bootloader.js',
       '--event',
@@ -17,18 +20,19 @@ export class PubSubService extends Service<PubSubServiceEvent, void> {
       '--name',
       this.serviceConfig.name
     ];
-    console.log(`-- executing ${this.serviceConfig.name} --`);
+    logger.info(`-- executing %s --`, this.serviceConfig.name, { label: 'PubSubService:exec' });
     spawn('node', args, {
       env: {
         ...process.env,
         ...this.serviceConfig.envVars
       }
     })
-      .stdout.on('data', (data) => console.log(data.toString()))
-      .on('error', (err) => console.log(err));
+      .stdout.on('data', (data) => logger.verbose(data.toString(), { label: 'PubSubService:exec' }))
+      .on('error', (err) => logger.error(err));
   }
+
   public canBeExecuted(event: PubSubServiceEvent): boolean {
-    console.log(`${(<PubSubFunctionConfig>this.serviceConfig.triggerConfig).topic} === ${event.topic}`);
+    Logger.getLogger().debug(`${(<PubSubFunctionConfig>this.serviceConfig.triggerConfig).topic} === ${event.topic}`);
     return (<PubSubFunctionConfig>this.serviceConfig.triggerConfig).topic === event.topic;
   }
 }
