@@ -24,6 +24,7 @@ export interface Config {
   bucketLocation: string;
   httpProxyPort?: number;
   grpcProxyPort?: number;
+  loglevel: 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly';
   provider: ProviderConfig;
   services: Array<ServiceConfig>;
 }
