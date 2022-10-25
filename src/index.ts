@@ -29,15 +29,15 @@ function exec() {
 
   const bucketServices = config.services
     .filter((service: ServiceConfig) => service.triggerType === TriggerType.BUCKET)
-    .map((service: ServiceConfig) => new BucketService(service));
+    .map((service: ServiceConfig) => new BucketService(service, config.grpcProxyPort));
 
   const httpServices = config.services
     .filter((service: ServiceConfig) => service.triggerType === TriggerType.HTTP)
-    .map((service: ServiceConfig) => new HttpService(service));
+    .map((service: ServiceConfig) => new HttpService(service, config.grpcProxyPort));
 
   const pubSubServices = config.services
     .filter((service: ServiceConfig) => service.triggerType === TriggerType.PUBSUB)
-    .map((service: ServiceConfig) => new PubSubService(service));
+    .map((service: ServiceConfig) => new PubSubService(service, config.grpcProxyPort));
 
   ServiceCollection.bucketServices.push(...bucketServices);
   ServiceCollection.httpServices.push(...httpServices);
@@ -72,7 +72,7 @@ function exec() {
 
   if (httpServices.length) {
     const app = express();
-    const port = config.port;
+    const port = config.httpProxyPort || 8080;
     const bodyParser = require('body-parser');
     logger.verbose('starting fen proxy on http://localhost:%s', port, { label: 'exec' });
 

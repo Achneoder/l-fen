@@ -1,13 +1,13 @@
-import { mockEndpoints } from '../api/gcloud/pubsub.api';
+import { mockEndpoints } from '../api/gcloud/grpc.api';
 import { ServiceConfig } from '../types/config.interface';
 import { Event } from '../types/service-event.interface';
 
 export abstract class Service<T extends Event, R> {
   private static pubSubPublisherInitiated = false;
-  constructor(protected readonly serviceConfig: ServiceConfig) {
+  constructor(protected readonly serviceConfig: ServiceConfig, grpcProxyPort?: number) {
     if (!Service.pubSubPublisherInitiated) {
       Service.pubSubPublisherInitiated = true;
-      mockEndpoints();
+      mockEndpoints(grpcProxyPort);
     }
   }
 

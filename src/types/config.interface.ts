@@ -22,7 +22,8 @@ export interface PubSubFunctionConfig {
 
 export interface Config {
   bucketLocation: string;
-  port: number;
+  httpProxyPort?: number;
+  grpcProxyPort?: number;
   provider: ProviderConfig;
   services: Array<ServiceConfig>;
 }
