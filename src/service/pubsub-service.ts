@@ -1,9 +1,9 @@
+import { spawn } from 'child_process';
+import path from 'path';
+import { Logger } from '../helper/logger';
 import { PubSubFunctionConfig } from '../types/config.interface';
 import { PubSubServiceEvent } from '../types/service-event.interface';
 import { Service } from './service.abstract';
-import path from 'path';
-import { spawn } from 'child_process';
-import { Logger } from '../helper/logger';
 
 export class PubSubService extends Service<PubSubServiceEvent, void> {
   public async exec(event: PubSubServiceEvent): Promise<void> {

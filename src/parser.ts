@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import {Config} from "./types/config.interface";
+import { Config } from './types/config.interface';
 
 let config: Config;
 
@@ -10,7 +10,7 @@ let config: Config;
  */
 export function getConfig(file = '.fenrc.json', forceReload = false): Config {
   if (!config || forceReload) {
-    config = JSON.parse(fs.readFileSync(file).toString())
+    config = JSON.parse(fs.readFileSync(file).toString());
   }
   return config;
 }

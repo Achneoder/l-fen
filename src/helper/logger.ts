@@ -1,4 +1,4 @@
-import { createLogger, Logger as LoggerInstance, format } from 'winston';
+import { createLogger, format, Logger as LoggerInstance } from 'winston';
 import { Console } from 'winston/lib/winston/transports';
 import { getConfig } from '../parser';
 

@@ -1,11 +1,11 @@
-import { Service } from './service.abstract';
-import { TriggerType } from '../types/trigger-type.enum';
-import { BucketServiceEvent } from '../types/service-event.interface';
 import { spawn } from 'child_process';
-import { BucketEvent } from '../types/gcloud.interface';
-import { BucketFunctionConfig } from '../types/config.interface';
 import path from 'path';
 import { Logger } from '../helper/logger';
+import { BucketFunctionConfig } from '../types/config.interface';
+import { BucketEvent } from '../types/gcloud.interface';
+import { BucketServiceEvent } from '../types/service-event.interface';
+import { TriggerType } from '../types/trigger-type.enum';
+import { Service } from './service.abstract';
 
 export class BucketService extends Service<BucketServiceEvent, void> {
   public async exec(event: BucketServiceEvent): Promise<void> {

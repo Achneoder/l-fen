@@ -5,21 +5,21 @@ import { ServiceCollection } from '../../../service/service-collection';
 import * as google_protobuf_empty_pb from '../../../types/protos/google/protobuf/empty_pb';
 import { IPublisherServer } from '../../../types/protos/google/pubsub/v1/pubsub_grpc_pb';
 import {
-  PublishRequest,
-  PublishResponse,
-  UpdateTopicRequest,
+  DeleteTopicRequest,
+  DetachSubscriptionRequest,
+  DetachSubscriptionResponse,
   GetTopicRequest,
+  ListTopicSnapshotsRequest,
+  ListTopicSnapshotsResponse,
   ListTopicsRequest,
   ListTopicsResponse,
   ListTopicSubscriptionsRequest,
   ListTopicSubscriptionsResponse,
-  ListTopicSnapshotsRequest,
-  ListTopicSnapshotsResponse,
-  DeleteTopicRequest,
-  DetachSubscriptionRequest,
+  PublishRequest,
+  PublishResponse,
   PubsubMessage,
   Topic,
-  DetachSubscriptionResponse
+  UpdateTopicRequest
 } from '../../../types/protos/google/pubsub/v1/pubsub_pb';
 import { PubSubServiceEvent } from '../../../types/service-event.interface';
 

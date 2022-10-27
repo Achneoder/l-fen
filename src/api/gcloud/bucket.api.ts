@@ -1,13 +1,13 @@
-import { GcpObject, ObjectListQuery } from '../../types/gcloud.interface';
-import * as glob from 'glob';
 import * as fs from 'fs';
 import { Stats } from 'fs';
-import nock from 'nock';
-import { getMetadata, saveMetadata } from '../metadata';
-import { URL } from 'url';
+import * as glob from 'glob';
 import * as md5File from 'md5-file';
+import nock from 'nock';
+import { URL } from 'url';
 import { calculate } from '../../helper/crc32c';
 import { getConfig } from '../../parser';
+import { GcpObject, ObjectListQuery } from '../../types/gcloud.interface';
+import { getMetadata, saveMetadata } from '../metadata';
 
 export async function list(bucket: string, query?: ObjectListQuery): Promise<Array<GcpObject>> {
   const config = getConfig();

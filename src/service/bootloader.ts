@@ -1,18 +1,18 @@
+import request from 'supertest';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import { mockEndoints as mockAuthEndpoints } from '../api/gcloud/auth.api';
+import { mockEndoints as mockBucketEndpoints } from '../api/gcloud/bucket.api';
+import { FunctionRequest } from '../helper/function-request';
+import { Logger } from '../helper/logger';
+import { getConfig } from '../parser';
 import { BootloaderArgs } from '../types/bootloader-args.interface';
 import { ServiceConfig } from '../types/config.interface';
-import { getConfig } from '../parser';
-import { mockEndoints as mockBucketEndpoints } from '../api/gcloud/bucket.api';
-import { mockEndoints as mockAuthEndpoints } from '../api/gcloud/auth.api';
+import { BucketFunctionHandler, PubSubFunctionHandler } from '../types/entrypoint.type';
 import { BucketEvent, PubSubEvent } from '../types/gcloud.interface';
 import { Provider } from '../types/provider.enum';
-import { TriggerType } from '../types/trigger-type.enum';
 import { HttpServiceRequest } from '../types/service-event.interface';
-import { FunctionRequest } from '../helper/function-request';
-import { BucketFunctionHandler, HttpFunctionHandler, PubSubFunctionHandler } from '../types/entrypoint.type';
-import request from 'supertest';
-import { Logger } from '../helper/logger';
+import { TriggerType } from '../types/trigger-type.enum';
 const express = require('express');
 const bodyParser = require('body-parser');
 

@@ -1,8 +1,8 @@
-import { Service } from './service.abstract';
-import { HttpServiceRequest, HttpServiceResponse } from '../types/service-event.interface';
 import { spawn } from 'child_process';
 import path from 'path';
 import { Logger } from '../helper/logger';
+import { HttpServiceRequest, HttpServiceResponse } from '../types/service-event.interface';
+import { Service } from './service.abstract';
 
 export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse> {
   private readonly logs: Array<string> = [];

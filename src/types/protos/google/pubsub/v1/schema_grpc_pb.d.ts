@@ -5,11 +5,8 @@
 /* eslint-disable */
 
 import * as grpc from '@grpc/grpc-js';
-import * as google_pubsub_v1_schema_pb from '../../../google/pubsub/v1/schema_pb';
-import * as google_api_client_pb from '../../../google/api/client_pb';
-import * as google_api_field_behavior_pb from '../../../google/api/field_behavior_pb';
-import * as google_api_resource_pb from '../../../google/api/resource_pb';
 import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
+import * as google_pubsub_v1_schema_pb from '../../../google/pubsub/v1/schema_pb';
 
 interface ISchemaServiceService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
   createSchema: ISchemaServiceService_ICreateSchema;

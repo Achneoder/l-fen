@@ -1,19 +1,19 @@
-import { getConfig } from './parser';
 import chokidar from 'chokidar';
-import { fenMetadataFolder } from './api/metadata';
-import { ServiceConfig } from './types/config.interface';
-import { TriggerType } from './types/trigger-type.enum';
-import { BucketService } from './service/bucket-service';
-import { BucketServiceEvent, HttpServiceRequest, HttpServiceResponse } from './types/service-event.interface';
-import { TriggerEvent } from './types/trigger-event.enum';
-import { HttpService } from './service/http-service';
 import express, { Request, Response } from 'express';
-import { Provider } from './types/provider.enum';
 import fs from 'fs';
+import { resolve } from 'path';
+import { fenMetadataFolder } from './api/metadata';
+import { Logger } from './helper/logger';
+import { getConfig } from './parser';
+import { BucketService } from './service/bucket-service';
+import { HttpService } from './service/http-service';
 import { PubSubService } from './service/pubsub-service';
 import { ServiceCollection } from './service/service-collection';
-import { Logger } from './helper/logger';
-import { resolve } from 'path';
+import { ServiceConfig } from './types/config.interface';
+import { Provider } from './types/provider.enum';
+import { BucketServiceEvent, HttpServiceRequest, HttpServiceResponse } from './types/service-event.interface';
+import { TriggerEvent } from './types/trigger-event.enum';
+import { TriggerType } from './types/trigger-type.enum';
 
 function exec() {
   const logger = Logger.getLogger();
