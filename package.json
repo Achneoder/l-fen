@@ -1,5 +1,5 @@
 {
-  "name": "fen",
+  "name": "l-fen",
   "version": "0.0.1",
   "description": "sandbox to simulate full serverless function environment",
   "main": "lib/index.js",
