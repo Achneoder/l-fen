@@ -13,6 +13,7 @@ import fs from 'fs';
 import { PubSubService } from './service/pubsub-service';
 import { ServiceCollection } from './service/service-collection';
 import { Logger } from './helper/logger';
+import { resolve } from 'path';
 
 function exec() {
   const logger = Logger.getLogger();
@@ -53,15 +54,11 @@ function exec() {
       awaitWriteFinish: true
     });
     watcher.on('add', (path: string) => {
-      logger.verbose('filewrite detected in bucket', path, { label: 'exec' });
       if (process.platform === 'win32') {
         path = path.replace(/\\/g, '/');
       }
-      const event: BucketServiceEvent = {
-        bucket: path.split('/')[1],
-        name: path.split('/').slice(2).join('/'),
-        eventType: TriggerEvent.WRITE
-      };
+      logger.debug('filewrite detected for file %s', path, { label: 'exec' });
+      const event: BucketServiceEvent = createBucketServiceEvent(path, config.bucketLocation, TriggerEvent.WRITE);
       bucketServices
         .filter((service: BucketService) => service.canBeExecuted(event))
         .forEach((service: BucketService) => service.exec(event).catch((err) => logger.error(err, { label: 'exec' })));
@@ -111,6 +108,25 @@ function exec() {
       logger.info('------- http proxy listening on http://localhost:%s -------', port, { label: 'exec' });
     });
   }
+}
+
+function createBucketServiceEvent(
+  fileEventsPath: string,
+  bucketLocation: string,
+  eventType: TriggerEvent
+): BucketServiceEvent {
+  if (process.platform === 'win32') {
+    fileEventsPath = fileEventsPath.replace(/\\/g, '/');
+  }
+  const resolvedFilePath = resolve(fileEventsPath);
+  const resolvedBucketLocation = resolve(bucketLocation);
+
+  fileEventsPath = resolvedFilePath.split(resolvedBucketLocation).pop();
+  return {
+    bucket: fileEventsPath.split('/')[1],
+    name: fileEventsPath.split('/').slice(2).join('/'),
+    eventType
+  };
 }
 
 exec();
