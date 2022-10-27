@@ -6,7 +6,7 @@ export const fenMetadataFolder = '.__fen';
 function getSanitizedFilePath(bucket: string, fileName: string): string {
   const config = getConfig();
   return `${
-    config.bucketLocation.endsWith('/') ? config.bucketLocation : config.bucketLocation + '/'
+    config.storageDir.endsWith('/') ? config.storageDir : config.storageDir + '/'
   }${fenMetadataFolder}/${bucket}/${fileName}`;
 }
 

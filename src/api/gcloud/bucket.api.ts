@@ -11,8 +11,7 @@ import { getConfig } from '../../parser';
 
 export async function list(bucket: string, query?: ObjectListQuery): Promise<Array<GcpObject>> {
   const config = getConfig();
-  const bucketPath =
-    (config.bucketLocation.endsWith('/') ? config.bucketLocation : config.bucketLocation + '/') + bucket + '/';
+  const bucketPath = (config.storageDir.endsWith('/') ? config.storageDir : config.storageDir + '/') + bucket + '/';
   const pathGlob = `${bucketPath}${query?.prefix ? query.prefix + '/' : ''}**/*`;
   const files = glob
     .sync(pathGlob)
@@ -94,7 +93,7 @@ export function mockEndoints(): void {
         const [bucket, fileName] = extractFromUri(uri, [4, 6]);
         const decodedFileName = decodeURIComponent(fileName);
         const bucketPath =
-          (config.bucketLocation.endsWith('/') ? config.bucketLocation : config.bucketLocation + '/') + bucket + '/';
+          (config.storageDir.endsWith('/') ? config.storageDir : config.storageDir + '/') + bucket + '/';
 
         const req = this.req;
         const parsedUri = new URL(req.path, 'https://storage.googleapis.com');
@@ -148,8 +147,7 @@ export function mockEndoints(): void {
     .query(true)
     .reply(200, function (uri: string, body: nock.Body, cb) {
       const [bucket] = extractFromUri(uri, [5]);
-      const bucketPath =
-        (config.bucketLocation.endsWith('/') ? config.bucketLocation : config.bucketLocation + '/') + bucket + '/';
+      const bucketPath = (config.storageDir.endsWith('/') ? config.storageDir : config.storageDir + '/') + bucket + '/';
 
       const parsedUri = new URL(this.req.path, 'https://storage.googleapis.com');
       const fileName = decodeURIComponent(parsedUri.searchParams.get('name'));

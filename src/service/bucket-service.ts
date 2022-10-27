@@ -34,7 +34,18 @@ export class BucketService extends Service<BucketServiceEvent, void> {
   }
 
   public canBeExecuted(event: BucketServiceEvent): boolean {
+    const logger = Logger.getLogger();
     const triggerConfig = this.serviceConfig.triggerConfig as BucketFunctionConfig;
+    logger.debug(
+      '%s: TriggerType.Bucket: %s;  reacts on event %s: %s; listens on bucket %s: %s',
+      this.serviceConfig.name,
+      this.serviceConfig.triggerType === TriggerType.BUCKET,
+      event.eventType,
+      (triggerConfig.events || []).includes(event.eventType),
+      event.bucket,
+      triggerConfig.targetBucket === event.bucket,
+      { label: 'BucketService:canBeExecuted' }
+    );
     return (
       this.serviceConfig.triggerType === TriggerType.BUCKET &&
       (triggerConfig.events || []).includes(event.eventType) &&

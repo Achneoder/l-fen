@@ -21,7 +21,7 @@ export interface PubSubFunctionConfig {
 }
 
 export interface Config {
-  bucketLocation: string;
+  storageDir: string;
   httpProxyPort?: number;
   grpcProxyPort?: number;
   loglevel: 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly';

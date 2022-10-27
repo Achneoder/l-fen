@@ -46,9 +46,9 @@ function exec() {
 
   if (bucketServices.length) {
     // Initialize watcher.
-    logger.info('------- initializing file watcher in dir %s -------', config.bucketLocation, { label: 'exec' });
-    const watcher = chokidar.watch(config.bucketLocation, {
-      ignored: `${config.bucketLocation}/${fenMetadataFolder}/**/*`,
+    logger.info('------- initializing file watcher in dir %s -------', config.storageDir, { label: 'exec' });
+    const watcher = chokidar.watch(config.storageDir, {
+      ignored: `${config.storageDir}/${fenMetadataFolder}/**/*`,
       persistent: true,
       ignoreInitial: true,
       awaitWriteFinish: true
@@ -58,7 +58,7 @@ function exec() {
         path = path.replace(/\\/g, '/');
       }
       logger.debug('filewrite detected for file %s', path, { label: 'exec' });
-      const event: BucketServiceEvent = createBucketServiceEvent(path, config.bucketLocation, TriggerEvent.WRITE);
+      const event: BucketServiceEvent = createBucketServiceEvent(path, config.storageDir, TriggerEvent.WRITE);
       bucketServices
         .filter((service: BucketService) => service.canBeExecuted(event))
         .forEach((service: BucketService) => service.exec(event).catch((err) => logger.error(err, { label: 'exec' })));
@@ -112,16 +112,16 @@ function exec() {
 
 function createBucketServiceEvent(
   fileEventsPath: string,
-  bucketLocation: string,
+  storageDir: string,
   eventType: TriggerEvent
 ): BucketServiceEvent {
   if (process.platform === 'win32') {
     fileEventsPath = fileEventsPath.replace(/\\/g, '/');
   }
   const resolvedFilePath = resolve(fileEventsPath);
-  const resolvedBucketLocation = resolve(bucketLocation);
+  const resolvedstorageDir = resolve(storageDir);
 
-  fileEventsPath = resolvedFilePath.split(resolvedBucketLocation).pop();
+  fileEventsPath = resolvedFilePath.split(resolvedstorageDir).pop();
   return {
     bucket: fileEventsPath.split('/')[1],
     name: fileEventsPath.split('/').slice(2).join('/'),
