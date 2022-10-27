@@ -11,8 +11,8 @@
     "start": "node lib/index.js"
   },
   "bin": {
-    "fen-boot": "./lib/service/bootloader.js",
-    "fen": "./lib/index.js"
+    "l-fen-boot": "./lib/service/bootloader.js",
+    "l-fen": "./lib/index.js"
   },
   "repository": {
     "type": "git",
@@ -44,7 +44,7 @@
     "@google-cloud/pubsub": "^3.2.0",
     "@grpc/grpc-js": "^1.7.2",
     "@grpc/proto-loader": "^0.7.3",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "chokidar": "^3.5.1",
     "express": "^4.17.1",
     "fast-crc32c": "^2.0.0",

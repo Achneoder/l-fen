@@ -13,6 +13,8 @@ import { FunctionRequest } from '../helper/function-request';
 import { BucketFunctionHandler, HttpFunctionHandler, PubSubFunctionHandler } from '../types/entrypoint.type';
 import request from 'supertest';
 import { Logger } from '../helper/logger';
+const express = require('express');
+const bodyParser = require('body-parser');
 
 async function bootService() {
   const logger = Logger.getLogger();
@@ -23,10 +25,12 @@ async function bootService() {
 
   const config = getConfig(argv.config);
   const serviceConfig = config.services.find((service: ServiceConfig) => service.name === argv.name);
+  logger.verbose(JSON.stringify(serviceConfig), { label: 'bootService' });
   // mock all endpoints used by google-cloud
   mockBucketEndpoints();
   mockAuthEndpoints();
 
+  logger.debug(`loading service with type ${serviceConfig.triggerType}`, { label: 'bootService' });
   if (serviceConfig.triggerType === TriggerType.BUCKET) {
     await bootBucketService(argv, serviceConfig);
   }
@@ -43,18 +47,24 @@ async function bootService() {
 async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfig): Promise<void> {
   // nock.recorder.rec();
 
+  const logger = Logger.getLogger();
   const event: HttpServiceRequest = JSON.parse(argv.base64 ? Buffer.from(argv.event, 'base64').toString() : argv.event);
   const functionRequest = new FunctionRequest(event);
 
   const file = require(argv.path);
-  const entryPoint: HttpFunctionHandler = file[argv.entryPoint];
+  const app = express();
+  app.use(bodyParser.json());
+  app.use(file[argv.entryPoint]);
+  // const entryPoint: HttpFunctionHandler = app;
 
   process.env = { ...process.env, ...(serviceConfig.envVars || {}) };
+  logger.debug('set env vars %s', JSON.stringify(process.env), 'bootHttpService');
 
   if (getConfig().provider.name === Provider.GCP) {
     process.env.GOOGLE_APPLICATION_CREDENTIALS = './.fen/gcp_service_account.json';
   }
-  const testRequest: request.SuperTest<request.Test> = request(entryPoint);
+  logger.debug('preparing http service %s', argv.path, { label: 'bootHttpService' });
+  const testRequest: request.SuperTest<request.Test> = request(app);
 
   let scope: request.Test;
   switch (functionRequest.method.toUpperCase()) {
@@ -76,6 +86,15 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
     default:
       throw new Error('HTTP method not yet implemented');
   }
+  logger.debug(
+    'sending %s request with %s %s',
+    functionRequest.method.toUpperCase(),
+    functionRequest.method.toUpperCase() === 'GET' ? 'query' : 'body',
+    functionRequest.method.toUpperCase() === 'GET'
+      ? JSON.stringify(functionRequest.query)
+      : JSON.stringify(functionRequest.body),
+    { label: 'bootHttpService' }
+  );
   Object.values(functionRequest.headers).forEach(([headerKey, headerValue]) => {
     scope.set(headerKey, headerValue);
   });
