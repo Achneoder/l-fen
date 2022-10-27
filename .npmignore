@@ -1,0 +1,15 @@
+/node_modules
+
+/tsconfig.json
+/.prettierrc
+/.eslintrc.json
+/.eslintignore
+/.npmignore
+/.releaserc
+
+/src/
+/scripts/
+/examples/
+/test/
+/coverage/
+/.github/
