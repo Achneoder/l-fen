@@ -54,6 +54,7 @@
     "fast-crc32c": "^2.0.0",
     "glob": "^7.1.6",
     "google-gax": "^3.5.2",
+    "google-protobuf": "^3.21.2",
     "md5-file": "^5.0.0",
     "nock": "^13.0.11",
     "supertest": "^6.3.0",
