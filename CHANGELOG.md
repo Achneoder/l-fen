@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/Achneoder/l-fen/compare/v1.0.0...v1.0.1) (2022-10-30)
+
+### Bug Fixes
+
+- add shebang to bin files ([0fa0197](https://github.com/Achneoder/l-fen/commit/0fa0197b6d3cd085909a4bf562e74bf0bbd7e02f))
+
 # 1.0.0 (2022-10-27)
 
 ### Bug Fixes
