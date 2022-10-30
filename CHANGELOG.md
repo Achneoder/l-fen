@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/Achneoder/l-fen/compare/v1.0.1...v1.0.2) (2022-10-30)
+
+### Bug Fixes
+
+- add missing google-protobuf dependency ([2b835da](https://github.com/Achneoder/l-fen/commit/2b835daa13ef101b273a73f199012afe711fbe07))
+
 ## [1.0.1](https://github.com/Achneoder/l-fen/compare/v1.0.0...v1.0.1) (2022-10-30)
 
 ### Bug Fixes
