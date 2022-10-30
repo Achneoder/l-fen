@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import chokidar from 'chokidar';
 import express, { Request, Response } from 'express';
 import fs from 'fs';
