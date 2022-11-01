@@ -112,3 +112,4 @@ lib/
 test-buckets/
 .fenrc.json
 .fen
+!examples/.fenrc.json

@@ -3,7 +3,7 @@ const { PubSub } = require('@google-cloud/pubsub');
 let pubSubClient;
 exports.handler = (req, res) => {
   if (req.method !== 'POST') {
-    res.stats(405).send();
+    res.status(405).send();
     return;
   }
   console.log('CUSTOM_PUBSUB_API_ENDPOINT', process.env.PUBSUB_API_ENDPOINT);

@@ -1,0 +1,46 @@
+{
+  "storageDir": "./local-test-storage",
+  "httpProxyPort": "8080",
+  "grpcProxyPort": "50051",
+  "loglevel": "verbose",
+  "provider": {
+    "name": "GCP",
+    "project": "my-test-project"
+  },
+  "services": [
+    {
+      "name": "http-handler",
+      "path": "./http-handler/index.js",
+      "entryPoint": "handler",
+      "triggerType": "HTTP",
+      "envVars": {
+        "PUBSUB_API_ENDPOINT": "localhost:50051",
+        "PROJECT_ID": "my-test-project",
+        "PUBSUB_TOPIC": "generic-topic"
+      }
+    },
+    {
+      "name": "file-writer",
+      "path": "./file-writer/index.js",
+      "entryPoint": "handler",
+      "triggerType": "PUBSUB",
+      "triggerConfig": {
+        "topic": "generic-topic"
+      },
+      "envVars": {
+        "MY_BUCKET": "my-bucket"
+      }
+    },
+    {
+      "name": "file-reader",
+      "path": "./file-reader/index.js",
+      "entryPoint": "handler",
+      "triggerType": "BUCKET",
+      "triggerConfig": {
+        "events": ["WRITE"],
+        "targetBucket": "my-bucket"
+      },
+      "envVars": {}
+    }
+  ]
+}
