@@ -12,7 +12,7 @@ export class BucketService extends Service<BucketServiceEvent, void> {
     const logger = Logger.getLogger();
     const bucketEvent: BucketEvent = { name: event.name, bucket: event.bucket };
     const args: Array<string> = [
-      './lib/service/bootloader.js',
+      `${__dirname}/bootloader.js`,
       '--event',
       JSON.stringify(bucketEvent),
       '--path',

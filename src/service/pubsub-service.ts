@@ -10,7 +10,7 @@ export class PubSubService extends Service<PubSubServiceEvent, void> {
     const logger = Logger.getLogger();
 
     const args: Array<string> = [
-      './lib/service/bootloader.js',
+      `${__dirname}/bootloader.js`,
       '--event',
       JSON.stringify(event),
       '--path',

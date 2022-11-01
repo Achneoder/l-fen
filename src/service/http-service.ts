@@ -11,7 +11,7 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
     const logger = Logger.getLogger();
     return new Promise((resolve, reject) => {
       const args: Array<string> = [
-        './lib/service/bootloader.js',
+        `${__dirname}/bootloader.js`,
         '--event',
         Buffer.from(JSON.stringify(event)).toString('base64'),
         '--base64',
