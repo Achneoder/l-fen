@@ -1,3 +1,9 @@
+## [1.0.4](https://github.com/Achneoder/l-fen/compare/v1.0.3...v1.0.4) (2022-11-06)
+
+### Bug Fixes
+
+- **deps:** update dependency glob to v8 ([5e608e2](https://github.com/Achneoder/l-fen/commit/5e608e2e3c618d03038432e40688b832b94312cb))
+
 ## [1.0.3](https://github.com/Achneoder/l-fen/compare/v1.0.2...v1.0.3) (2022-11-01)
 
 ### Bug Fixes
