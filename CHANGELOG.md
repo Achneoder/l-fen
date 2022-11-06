@@ -1,3 +1,9 @@
+## [1.0.5](https://github.com/Achneoder/l-fen/compare/v1.0.4...v1.0.5) (2022-11-06)
+
+### Bug Fixes
+
+- **deps:** update dependency yargs to v17 ([def7789](https://github.com/Achneoder/l-fen/commit/def7789b8c29aa564c6df9a28f938c896746c116))
+
 ## [1.0.4](https://github.com/Achneoder/l-fen/compare/v1.0.3...v1.0.4) (2022-11-06)
 
 ### Bug Fixes
