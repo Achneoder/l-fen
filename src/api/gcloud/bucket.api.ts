@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import { Stats } from 'fs';
-import * as glob from 'glob';
+import { globSync } from 'glob';
 import * as md5File from 'md5-file';
 import nock from 'nock';
 import { URL } from 'url';
@@ -13,8 +13,7 @@ export async function list(bucket: string, query?: ObjectListQuery): Promise<Arr
   const config = getConfig();
   const bucketPath = (config.storageDir.endsWith('/') ? config.storageDir : config.storageDir + '/') + bucket + '/';
   const pathGlob = `${bucketPath}${query?.prefix ? query.prefix + '/' : ''}**/*`;
-  const files = glob
-    .sync(pathGlob)
+  const files = globSync(pathGlob)
     .filter((file: string) => !fs.statSync(file).isDirectory())
     .map((file: string) => getFileAsGcpObject(bucket, file));
   return await Promise.all(files);
