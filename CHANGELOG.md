@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/Achneoder/l-fen/compare/v1.0.5...v1.0.6) (2023-03-03)
+
+### Bug Fixes
+
+- **deps:** update dependency glob to v9 ([e553d46](https://github.com/Achneoder/l-fen/commit/e553d464eeeb23a62645c9814d05a961fe15b898))
+- migrate to glob >= 9 ([039a062](https://github.com/Achneoder/l-fen/commit/039a062ef9324a15ae17e28cc954b9196ae20e19))
+
 ## [1.0.5](https://github.com/Achneoder/l-fen/compare/v1.0.4...v1.0.5) (2022-11-06)
 
 ### Bug Fixes
