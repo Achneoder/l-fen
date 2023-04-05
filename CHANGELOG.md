@@ -1,3 +1,16 @@
+## [1.0.7](https://github.com/Achneoder/l-fen/compare/v1.0.6...v1.0.7) (2023-04-05)
+
+### Bug Fixes
+
+- **deps:** update dependency @google-cloud/pubsub to v3.4.1 ([2e8db01](https://github.com/Achneoder/l-fen/commit/2e8db019269b1333bf5673b22ffac10c7714436e))
+- **deps:** update dependency @grpc/proto-loader to v0.7.6 ([dd33c38](https://github.com/Achneoder/l-fen/commit/dd33c3806cbc015f5b75399287ca2f548a0d2cea))
+- **deps:** update dependency body-parser to v1.20.2 ([ac2482d](https://github.com/Achneoder/l-fen/commit/ac2482d1f2534d3fa0eca248d4ecd9aa200c78b3))
+- **deps:** update dependency glob to v9.3.4 ([e46f8c2](https://github.com/Achneoder/l-fen/commit/e46f8c23a5d5f0e453619c3902da6803036e3213))
+- **deps:** update dependency google-gax to v3.6.0 ([f62c0d4](https://github.com/Achneoder/l-fen/commit/f62c0d4f9914bb147bfe08948cf3227eadb4d5da))
+- **deps:** update dependency nock to v13.3.0 ([9c27b12](https://github.com/Achneoder/l-fen/commit/9c27b1288479f77497f9640641568c1a6b3a06ea))
+- **deps:** update dependency supertest to v6.3.3 ([40e653c](https://github.com/Achneoder/l-fen/commit/40e653c8176c446eacf42bb6dc2f334f99d1df9a))
+- **deps:** update dependency yargs to v17.7.1 ([68e4b17](https://github.com/Achneoder/l-fen/commit/68e4b17fa58917d6289d11469e425d78c2dd76ee))
+
 ## [1.0.6](https://github.com/Achneoder/l-fen/compare/v1.0.5...v1.0.6) (2023-03-03)
 
 ### Bug Fixes
