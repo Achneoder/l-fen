@@ -13,7 +13,21 @@
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = Function('return this')();
+var global = function () {
+  if (this) {
+    return this;
+  }
+  if (typeof window !== 'undefined') {
+    return window;
+  }
+  if (typeof global !== 'undefined') {
+    return global;
+  }
+  if (typeof self !== 'undefined') {
+    return self;
+  }
+  return Function('return this')();
+}.call(null);
 
 var google_api_annotations_pb = require('../../../google/api/annotations_pb.js');
 goog.object.extend(proto, google_api_annotations_pb);
@@ -1327,7 +1341,9 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
     var f,
       obj = {
         schema: jspb.Message.getFieldWithDefault(msg, 1, ''),
-        encoding: jspb.Message.getFieldWithDefault(msg, 2, 0)
+        encoding: jspb.Message.getFieldWithDefault(msg, 2, 0),
+        firstRevisionId: jspb.Message.getFieldWithDefault(msg, 3, ''),
+        lastRevisionId: jspb.Message.getFieldWithDefault(msg, 4, '')
       };
 
     if (includeInstance) {
@@ -1370,6 +1386,14 @@ proto.google.pubsub.v1.SchemaSettings.deserializeBinaryFromReader = function (ms
         var value = /** @type {!proto.google.pubsub.v1.Encoding} */ (reader.readEnum());
         msg.setEncoding(value);
         break;
+      case 3:
+        var value = /** @type {string} */ (reader.readString());
+        msg.setFirstRevisionId(value);
+        break;
+      case 4:
+        var value = /** @type {string} */ (reader.readString());
+        msg.setLastRevisionId(value);
+        break;
       default:
         reader.skipField();
         break;
@@ -1405,6 +1429,14 @@ proto.google.pubsub.v1.SchemaSettings.serializeBinaryToWriter = function (messag
   if (f !== 0.0) {
     writer.writeEnum(2, f);
   }
+  f = message.getFirstRevisionId();
+  if (f.length > 0) {
+    writer.writeString(3, f);
+  }
+  f = message.getLastRevisionId();
+  if (f.length > 0) {
+    writer.writeString(4, f);
+  }
 };
 
 /**
@@ -1437,6 +1469,38 @@ proto.google.pubsub.v1.SchemaSettings.prototype.getEncoding = function () {
  */
 proto.google.pubsub.v1.SchemaSettings.prototype.setEncoding = function (value) {
   return jspb.Message.setProto3EnumField(this, 2, value);
+};
+
+/**
+ * optional string first_revision_id = 3;
+ * @return {string}
+ */
+proto.google.pubsub.v1.SchemaSettings.prototype.getFirstRevisionId = function () {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ''));
+};
+
+/**
+ * @param {string} value
+ * @return {!proto.google.pubsub.v1.SchemaSettings} returns this
+ */
+proto.google.pubsub.v1.SchemaSettings.prototype.setFirstRevisionId = function (value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+/**
+ * optional string last_revision_id = 4;
+ * @return {string}
+ */
+proto.google.pubsub.v1.SchemaSettings.prototype.getLastRevisionId = function () {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ''));
+};
+
+/**
+ * @param {string} value
+ * @return {!proto.google.pubsub.v1.SchemaSettings} returns this
+ */
+proto.google.pubsub.v1.SchemaSettings.prototype.setLastRevisionId = function (value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -8027,7 +8091,7 @@ proto.google.pubsub.v1.StreamingPullResponse.serializeBinaryToWriter = function 
  * @private {!Array<number>}
  * @const
  */
-proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation.repeatedFields_ = [1, 2, 3];
+proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation.repeatedFields_ = [1, 2, 3, 4];
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
   /**
@@ -8062,7 +8126,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
       obj = {
         ackIdsList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
         invalidAckIdsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
-        unorderedAckIdsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f
+        unorderedAckIdsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+        temporaryFailedAckIdsList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f
       };
 
     if (includeInstance) {
@@ -8112,6 +8177,10 @@ proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation.deserialize
         var value = /** @type {string} */ (reader.readString());
         msg.addUnorderedAckIds(value);
         break;
+      case 4:
+        var value = /** @type {string} */ (reader.readString());
+        msg.addTemporaryFailedAckIds(value);
+        break;
       default:
         reader.skipField();
         break;
@@ -8153,6 +8222,10 @@ proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation.serializeBi
   f = message.getUnorderedAckIdsList();
   if (f.length > 0) {
     writer.writeRepeatedString(3, f);
+  }
+  f = message.getTemporaryFailedAckIdsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(4, f);
   }
 };
 
@@ -8264,11 +8337,51 @@ proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation.prototype.c
 };
 
 /**
+ * repeated string temporary_failed_ack_ids = 4;
+ * @return {!Array<string>}
+ */
+proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation.prototype.getTemporaryFailedAckIdsList =
+  function () {
+    return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+  };
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation} returns this
+ */
+proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation.prototype.setTemporaryFailedAckIdsList = function (
+  value
+) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation} returns this
+ */
+proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation.prototype.addTemporaryFailedAckIds = function (
+  value,
+  opt_index
+) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation} returns this
+ */
+proto.google.pubsub.v1.StreamingPullResponse.AcknowledgeConfirmation.prototype.clearTemporaryFailedAckIdsList =
+  function () {
+    return this.setTemporaryFailedAckIdsList([]);
+  };
+
+/**
  * List of repeated fields within this message type.
  * @private {!Array<number>}
  * @const
  */
-proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation.repeatedFields_ = [1, 2];
+proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation.repeatedFields_ = [1, 2, 3];
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
   /**
@@ -8308,7 +8421,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
     var f,
       obj = {
         ackIdsList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
-        invalidAckIdsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f
+        invalidAckIdsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
+        temporaryFailedAckIdsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f
       };
 
     if (includeInstance) {
@@ -8357,6 +8471,10 @@ proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation.deser
         var value = /** @type {string} */ (reader.readString());
         msg.addInvalidAckIds(value);
         break;
+      case 3:
+        var value = /** @type {string} */ (reader.readString());
+        msg.addTemporaryFailedAckIds(value);
+        break;
       default:
         reader.skipField();
         break;
@@ -8394,6 +8512,10 @@ proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation.seria
   f = message.getInvalidAckIdsList();
   if (f.length > 0) {
     writer.writeRepeatedString(2, f);
+  }
+  f = message.getTemporaryFailedAckIdsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(3, f);
   }
 };
 
@@ -8471,6 +8593,43 @@ proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation.proto
 proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation.prototype.clearInvalidAckIdsList =
   function () {
     return this.setInvalidAckIdsList([]);
+  };
+
+/**
+ * repeated string temporary_failed_ack_ids = 3;
+ * @return {!Array<string>}
+ */
+proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation.prototype.getTemporaryFailedAckIdsList =
+  function () {
+    return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+  };
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation} returns this
+ */
+proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation.prototype.setTemporaryFailedAckIdsList =
+  function (value) {
+    return jspb.Message.setField(this, 3, value || []);
+  };
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation} returns this
+ */
+proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation.prototype.addTemporaryFailedAckIds =
+  function (value, opt_index) {
+    return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+  };
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation} returns this
+ */
+proto.google.pubsub.v1.StreamingPullResponse.ModifyAckDeadlineConfirmation.prototype.clearTemporaryFailedAckIdsList =
+  function () {
+    return this.setTemporaryFailedAckIdsList([]);
   };
 
 if (jspb.Message.GENERATE_TO_OBJECT) {

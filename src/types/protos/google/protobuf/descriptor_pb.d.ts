@@ -770,6 +770,11 @@ export class MessageOptions extends jspb.Message {
   clearMapEntry(): void;
   getMapEntry(): boolean | undefined;
   setMapEntry(value: boolean): MessageOptions;
+
+  hasDeprecatedLegacyJsonFieldConflicts(): boolean;
+  clearDeprecatedLegacyJsonFieldConflicts(): void;
+  getDeprecatedLegacyJsonFieldConflicts(): boolean | undefined;
+  setDeprecatedLegacyJsonFieldConflicts(value: boolean): MessageOptions;
   clearUninterpretedOptionList(): void;
   getUninterpretedOptionList(): Array<UninterpretedOption>;
   setUninterpretedOptionList(value: Array<UninterpretedOption>): MessageOptions;
@@ -791,6 +796,7 @@ export namespace MessageOptions {
     noStandardDescriptorAccessor?: boolean;
     deprecated?: boolean;
     mapEntry?: boolean;
+    deprecatedLegacyJsonFieldConflicts?: boolean;
     uninterpretedOptionList: Array<UninterpretedOption.AsObject>;
   };
 }
@@ -830,6 +836,21 @@ export class FieldOptions extends jspb.Message {
   clearWeak(): void;
   getWeak(): boolean | undefined;
   setWeak(value: boolean): FieldOptions;
+
+  hasDebugRedact(): boolean;
+  clearDebugRedact(): void;
+  getDebugRedact(): boolean | undefined;
+  setDebugRedact(value: boolean): FieldOptions;
+
+  hasRetention(): boolean;
+  clearRetention(): void;
+  getRetention(): FieldOptions.OptionRetention | undefined;
+  setRetention(value: FieldOptions.OptionRetention): FieldOptions;
+
+  hasTarget(): boolean;
+  clearTarget(): void;
+  getTarget(): FieldOptions.OptionTargetType | undefined;
+  setTarget(value: FieldOptions.OptionTargetType): FieldOptions;
   clearUninterpretedOptionList(): void;
   getUninterpretedOptionList(): Array<UninterpretedOption>;
   setUninterpretedOptionList(value: Array<UninterpretedOption>): FieldOptions;
@@ -854,6 +875,9 @@ export namespace FieldOptions {
     unverifiedLazy?: boolean;
     deprecated?: boolean;
     weak?: boolean;
+    debugRedact?: boolean;
+    retention?: FieldOptions.OptionRetention;
+    target?: FieldOptions.OptionTargetType;
     uninterpretedOptionList: Array<UninterpretedOption.AsObject>;
   };
 
@@ -867,6 +891,25 @@ export namespace FieldOptions {
     JS_NORMAL = 0,
     JS_STRING = 1,
     JS_NUMBER = 2
+  }
+
+  export enum OptionRetention {
+    RETENTION_UNKNOWN = 0,
+    RETENTION_RUNTIME = 1,
+    RETENTION_SOURCE = 2
+  }
+
+  export enum OptionTargetType {
+    TARGET_TYPE_UNKNOWN = 0,
+    TARGET_TYPE_FILE = 1,
+    TARGET_TYPE_EXTENSION_RANGE = 2,
+    TARGET_TYPE_MESSAGE = 3,
+    TARGET_TYPE_FIELD = 4,
+    TARGET_TYPE_ONEOF = 5,
+    TARGET_TYPE_ENUM = 6,
+    TARGET_TYPE_ENUM_ENTRY = 7,
+    TARGET_TYPE_SERVICE = 8,
+    TARGET_TYPE_METHOD = 9
   }
 }
 
@@ -902,6 +945,11 @@ export class EnumOptions extends jspb.Message {
   clearDeprecated(): void;
   getDeprecated(): boolean | undefined;
   setDeprecated(value: boolean): EnumOptions;
+
+  hasDeprecatedLegacyJsonFieldConflicts(): boolean;
+  clearDeprecatedLegacyJsonFieldConflicts(): void;
+  getDeprecatedLegacyJsonFieldConflicts(): boolean | undefined;
+  setDeprecatedLegacyJsonFieldConflicts(value: boolean): EnumOptions;
   clearUninterpretedOptionList(): void;
   getUninterpretedOptionList(): Array<UninterpretedOption>;
   setUninterpretedOptionList(value: Array<UninterpretedOption>): EnumOptions;
@@ -921,6 +969,7 @@ export namespace EnumOptions {
   export type AsObject = {
     allowAlias?: boolean;
     deprecated?: boolean;
+    deprecatedLegacyJsonFieldConflicts?: boolean;
     uninterpretedOptionList: Array<UninterpretedOption.AsObject>;
   };
 }

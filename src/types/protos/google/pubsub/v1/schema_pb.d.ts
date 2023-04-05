@@ -9,6 +9,7 @@ import * as google_api_client_pb from '../../../google/api/client_pb';
 import * as google_api_field_behavior_pb from '../../../google/api/field_behavior_pb';
 import * as google_api_resource_pb from '../../../google/api/resource_pb';
 import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
+import * as google_protobuf_timestamp_pb from 'google-protobuf/google/protobuf/timestamp_pb';
 
 export class Schema extends jspb.Message {
   getName(): string;
@@ -17,6 +18,13 @@ export class Schema extends jspb.Message {
   setType(value: Schema.Type): Schema;
   getDefinition(): string;
   setDefinition(value: string): Schema;
+  getRevisionId(): string;
+  setRevisionId(value: string): Schema;
+
+  hasRevisionCreateTime(): boolean;
+  clearRevisionCreateTime(): void;
+  getRevisionCreateTime(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setRevisionCreateTime(value?: google_protobuf_timestamp_pb.Timestamp): Schema;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Schema.AsObject;
@@ -33,6 +41,8 @@ export namespace Schema {
     name: string;
     type: Schema.Type;
     definition: string;
+    revisionId: string;
+    revisionCreateTime?: google_protobuf_timestamp_pb.Timestamp.AsObject;
   };
 
   export enum Type {
@@ -145,6 +155,141 @@ export namespace ListSchemasResponse {
   export type AsObject = {
     schemasList: Array<Schema.AsObject>;
     nextPageToken: string;
+  };
+}
+
+export class ListSchemaRevisionsRequest extends jspb.Message {
+  getName(): string;
+  setName(value: string): ListSchemaRevisionsRequest;
+  getView(): SchemaView;
+  setView(value: SchemaView): ListSchemaRevisionsRequest;
+  getPageSize(): number;
+  setPageSize(value: number): ListSchemaRevisionsRequest;
+  getPageToken(): string;
+  setPageToken(value: string): ListSchemaRevisionsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ListSchemaRevisionsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ListSchemaRevisionsRequest): ListSchemaRevisionsRequest.AsObject;
+  static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
+  static extensionsBinary: { [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message> };
+  static serializeBinaryToWriter(message: ListSchemaRevisionsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ListSchemaRevisionsRequest;
+  static deserializeBinaryFromReader(
+    message: ListSchemaRevisionsRequest,
+    reader: jspb.BinaryReader
+  ): ListSchemaRevisionsRequest;
+}
+
+export namespace ListSchemaRevisionsRequest {
+  export type AsObject = {
+    name: string;
+    view: SchemaView;
+    pageSize: number;
+    pageToken: string;
+  };
+}
+
+export class ListSchemaRevisionsResponse extends jspb.Message {
+  clearSchemasList(): void;
+  getSchemasList(): Array<Schema>;
+  setSchemasList(value: Array<Schema>): ListSchemaRevisionsResponse;
+  addSchemas(value?: Schema, index?: number): Schema;
+  getNextPageToken(): string;
+  setNextPageToken(value: string): ListSchemaRevisionsResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ListSchemaRevisionsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ListSchemaRevisionsResponse): ListSchemaRevisionsResponse.AsObject;
+  static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
+  static extensionsBinary: { [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message> };
+  static serializeBinaryToWriter(message: ListSchemaRevisionsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ListSchemaRevisionsResponse;
+  static deserializeBinaryFromReader(
+    message: ListSchemaRevisionsResponse,
+    reader: jspb.BinaryReader
+  ): ListSchemaRevisionsResponse;
+}
+
+export namespace ListSchemaRevisionsResponse {
+  export type AsObject = {
+    schemasList: Array<Schema.AsObject>;
+    nextPageToken: string;
+  };
+}
+
+export class CommitSchemaRequest extends jspb.Message {
+  getName(): string;
+  setName(value: string): CommitSchemaRequest;
+
+  hasSchema(): boolean;
+  clearSchema(): void;
+  getSchema(): Schema | undefined;
+  setSchema(value?: Schema): CommitSchemaRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CommitSchemaRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CommitSchemaRequest): CommitSchemaRequest.AsObject;
+  static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
+  static extensionsBinary: { [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message> };
+  static serializeBinaryToWriter(message: CommitSchemaRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CommitSchemaRequest;
+  static deserializeBinaryFromReader(message: CommitSchemaRequest, reader: jspb.BinaryReader): CommitSchemaRequest;
+}
+
+export namespace CommitSchemaRequest {
+  export type AsObject = {
+    name: string;
+    schema?: Schema.AsObject;
+  };
+}
+
+export class RollbackSchemaRequest extends jspb.Message {
+  getName(): string;
+  setName(value: string): RollbackSchemaRequest;
+  getRevisionId(): string;
+  setRevisionId(value: string): RollbackSchemaRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RollbackSchemaRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RollbackSchemaRequest): RollbackSchemaRequest.AsObject;
+  static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
+  static extensionsBinary: { [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message> };
+  static serializeBinaryToWriter(message: RollbackSchemaRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RollbackSchemaRequest;
+  static deserializeBinaryFromReader(message: RollbackSchemaRequest, reader: jspb.BinaryReader): RollbackSchemaRequest;
+}
+
+export namespace RollbackSchemaRequest {
+  export type AsObject = {
+    name: string;
+    revisionId: string;
+  };
+}
+
+export class DeleteSchemaRevisionRequest extends jspb.Message {
+  getName(): string;
+  setName(value: string): DeleteSchemaRevisionRequest;
+  getRevisionId(): string;
+  setRevisionId(value: string): DeleteSchemaRevisionRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DeleteSchemaRevisionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteSchemaRevisionRequest): DeleteSchemaRevisionRequest.AsObject;
+  static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
+  static extensionsBinary: { [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message> };
+  static serializeBinaryToWriter(message: DeleteSchemaRevisionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DeleteSchemaRevisionRequest;
+  static deserializeBinaryFromReader(
+    message: DeleteSchemaRevisionRequest,
+    reader: jspb.BinaryReader
+  ): DeleteSchemaRevisionRequest;
+}
+
+export namespace DeleteSchemaRevisionRequest {
+  export type AsObject = {
+    name: string;
+    revisionId: string;
   };
 }
 

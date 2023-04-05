@@ -676,9 +676,7 @@ var SubscriberService = (exports.SubscriberService = {
     responseSerialize: serialize_google_protobuf_Empty,
     responseDeserialize: deserialize_google_protobuf_Empty
   },
-  // Pulls messages from the server. The server may return `UNAVAILABLE` if
-  // there are too many concurrent pull requests pending for the given
-  // subscription.
+  // Pulls messages from the server.
   pull: {
     path: '/google.pubsub.v1.Subscriber/Pull',
     requestStream: false,
@@ -726,10 +724,10 @@ var SubscriberService = (exports.SubscriberService = {
     responseDeserialize: deserialize_google_protobuf_Empty
   },
   // Gets the configuration details of a snapshot. Snapshots are used in
-  // <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
-  // operations, which allow you to manage message acknowledgments in bulk. That
-  // is, you can set the acknowledgment state of messages in an existing
-  // subscription to the state captured by a snapshot.
+  // [Seek](https://cloud.google.com/pubsub/docs/replay-overview) operations,
+  // which allow you to manage message acknowledgments in bulk. That is, you can
+  // set the acknowledgment state of messages in an existing subscription to the
+  // state captured by a snapshot.
   getSnapshot: {
     path: '/google.pubsub.v1.Subscriber/GetSnapshot',
     requestStream: false,
@@ -785,11 +783,10 @@ var SubscriberService = (exports.SubscriberService = {
     responseDeserialize: deserialize_google_pubsub_v1_Snapshot
   },
   // Updates an existing snapshot. Snapshots are used in
-  // <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
-  // operations, which allow
-  // you to manage message acknowledgments in bulk. That is, you can set the
-  // acknowledgment state of messages in an existing subscription to the state
-  // captured by a snapshot.
+  // [Seek](https://cloud.google.com/pubsub/docs/replay-overview) operations,
+  // which allow you to manage message acknowledgments in bulk. That is, you can
+  // set the acknowledgment state of messages in an existing subscription to the
+  // state captured by a snapshot.
   updateSnapshot: {
     path: '/google.pubsub.v1.Subscriber/UpdateSnapshot',
     requestStream: false,

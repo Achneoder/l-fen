@@ -41,6 +41,10 @@ export class SchemaSettings extends jspb.Message {
   setSchema(value: string): SchemaSettings;
   getEncoding(): google_pubsub_v1_schema_pb.Encoding;
   setEncoding(value: google_pubsub_v1_schema_pb.Encoding): SchemaSettings;
+  getFirstRevisionId(): string;
+  setFirstRevisionId(value: string): SchemaSettings;
+  getLastRevisionId(): string;
+  setLastRevisionId(value: string): SchemaSettings;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SchemaSettings.AsObject;
@@ -56,6 +60,8 @@ export namespace SchemaSettings {
   export type AsObject = {
     schema: string;
     encoding: google_pubsub_v1_schema_pb.Encoding;
+    firstRevisionId: string;
+    lastRevisionId: string;
   };
 }
 
@@ -1137,6 +1143,10 @@ export namespace StreamingPullResponse {
     getUnorderedAckIdsList(): Array<string>;
     setUnorderedAckIdsList(value: Array<string>): AcknowledgeConfirmation;
     addUnorderedAckIds(value: string, index?: number): string;
+    clearTemporaryFailedAckIdsList(): void;
+    getTemporaryFailedAckIdsList(): Array<string>;
+    setTemporaryFailedAckIdsList(value: Array<string>): AcknowledgeConfirmation;
+    addTemporaryFailedAckIds(value: string, index?: number): string;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): AcknowledgeConfirmation.AsObject;
@@ -1156,6 +1166,7 @@ export namespace StreamingPullResponse {
       ackIdsList: Array<string>;
       invalidAckIdsList: Array<string>;
       unorderedAckIdsList: Array<string>;
+      temporaryFailedAckIdsList: Array<string>;
     };
   }
 
@@ -1168,6 +1179,10 @@ export namespace StreamingPullResponse {
     getInvalidAckIdsList(): Array<string>;
     setInvalidAckIdsList(value: Array<string>): ModifyAckDeadlineConfirmation;
     addInvalidAckIds(value: string, index?: number): string;
+    clearTemporaryFailedAckIdsList(): void;
+    getTemporaryFailedAckIdsList(): Array<string>;
+    setTemporaryFailedAckIdsList(value: Array<string>): ModifyAckDeadlineConfirmation;
+    addTemporaryFailedAckIds(value: string, index?: number): string;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): ModifyAckDeadlineConfirmation.AsObject;
@@ -1189,6 +1204,7 @@ export namespace StreamingPullResponse {
     export type AsObject = {
       ackIdsList: Array<string>;
       invalidAckIdsList: Array<string>;
+      temporaryFailedAckIdsList: Array<string>;
     };
   }
 

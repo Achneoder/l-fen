@@ -13,7 +13,21 @@
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = Function('return this')();
+var global = function () {
+  if (this) {
+    return this;
+  }
+  if (typeof window !== 'undefined') {
+    return window;
+  }
+  if (typeof global !== 'undefined') {
+    return global;
+  }
+  if (typeof self !== 'undefined') {
+    return self;
+  }
+  return Function('return this')();
+}.call(null);
 
 goog.exportSymbol('proto.google.protobuf.DescriptorProto', null, global);
 goog.exportSymbol('proto.google.protobuf.DescriptorProto.ExtensionRange', null, global);
@@ -30,6 +44,8 @@ goog.exportSymbol('proto.google.protobuf.FieldDescriptorProto.Type', null, globa
 goog.exportSymbol('proto.google.protobuf.FieldOptions', null, global);
 goog.exportSymbol('proto.google.protobuf.FieldOptions.CType', null, global);
 goog.exportSymbol('proto.google.protobuf.FieldOptions.JSType', null, global);
+goog.exportSymbol('proto.google.protobuf.FieldOptions.OptionRetention', null, global);
+goog.exportSymbol('proto.google.protobuf.FieldOptions.OptionTargetType', null, global);
 goog.exportSymbol('proto.google.protobuf.FileDescriptorProto', null, global);
 goog.exportSymbol('proto.google.protobuf.FileDescriptorSet', null, global);
 goog.exportSymbol('proto.google.protobuf.FileOptions', null, global);
@@ -6027,6 +6043,7 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
         noStandardDescriptorAccessor: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
         deprecated: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
         mapEntry: (f = jspb.Message.getBooleanField(msg, 7)) == null ? undefined : f,
+        deprecatedLegacyJsonFieldConflicts: (f = jspb.Message.getBooleanField(msg, 11)) == null ? undefined : f,
         uninterpretedOptionList: jspb.Message.toObjectList(
           msg.getUninterpretedOptionList(),
           proto.google.protobuf.UninterpretedOption.toObject,
@@ -6089,6 +6106,10 @@ proto.google.protobuf.MessageOptions.deserializeBinaryFromReader = function (msg
         var value = /** @type {boolean} */ (reader.readBool());
         msg.setMapEntry(value);
         break;
+      case 11:
+        var value = /** @type {boolean} */ (reader.readBool());
+        msg.setDeprecatedLegacyJsonFieldConflicts(value);
+        break;
       case 999:
         var value = new proto.google.protobuf.UninterpretedOption();
         reader.readMessage(value, proto.google.protobuf.UninterpretedOption.deserializeBinaryFromReader);
@@ -6142,6 +6163,10 @@ proto.google.protobuf.MessageOptions.serializeBinaryToWriter = function (message
   f = /** @type {boolean} */ (jspb.Message.getField(message, 7));
   if (f != null) {
     writer.writeBool(7, f);
+  }
+  f = /** @type {boolean} */ (jspb.Message.getField(message, 11));
+  if (f != null) {
+    writer.writeBool(11, f);
   }
   f = message.getUninterpretedOptionList();
   if (f.length > 0) {
@@ -6284,6 +6309,38 @@ proto.google.protobuf.MessageOptions.prototype.hasMapEntry = function () {
 };
 
 /**
+ * optional bool deprecated_legacy_json_field_conflicts = 11;
+ * @return {boolean}
+ */
+proto.google.protobuf.MessageOptions.prototype.getDeprecatedLegacyJsonFieldConflicts = function () {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 11, false));
+};
+
+/**
+ * @param {boolean} value
+ * @return {!proto.google.protobuf.MessageOptions} returns this
+ */
+proto.google.protobuf.MessageOptions.prototype.setDeprecatedLegacyJsonFieldConflicts = function (value) {
+  return jspb.Message.setField(this, 11, value);
+};
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.google.protobuf.MessageOptions} returns this
+ */
+proto.google.protobuf.MessageOptions.prototype.clearDeprecatedLegacyJsonFieldConflicts = function () {
+  return jspb.Message.setField(this, 11, undefined);
+};
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.google.protobuf.MessageOptions.prototype.hasDeprecatedLegacyJsonFieldConflicts = function () {
+  return jspb.Message.getField(this, 11) != null;
+};
+
+/**
  * repeated UninterpretedOption uninterpreted_option = 999;
  * @return {!Array<!proto.google.protobuf.UninterpretedOption>}
  */
@@ -6367,6 +6424,9 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
         unverifiedLazy: jspb.Message.getBooleanFieldWithDefault(msg, 15, false),
         deprecated: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
         weak: jspb.Message.getBooleanFieldWithDefault(msg, 10, false),
+        debugRedact: jspb.Message.getBooleanFieldWithDefault(msg, 16, false),
+        retention: (f = jspb.Message.getField(msg, 17)) == null ? undefined : f,
+        target: (f = jspb.Message.getField(msg, 18)) == null ? undefined : f,
         uninterpretedOptionList: jspb.Message.toObjectList(
           msg.getUninterpretedOptionList(),
           proto.google.protobuf.UninterpretedOption.toObject,
@@ -6441,6 +6501,18 @@ proto.google.protobuf.FieldOptions.deserializeBinaryFromReader = function (msg, 
         var value = /** @type {boolean} */ (reader.readBool());
         msg.setWeak(value);
         break;
+      case 16:
+        var value = /** @type {boolean} */ (reader.readBool());
+        msg.setDebugRedact(value);
+        break;
+      case 17:
+        var value = /** @type {!proto.google.protobuf.FieldOptions.OptionRetention} */ (reader.readEnum());
+        msg.setRetention(value);
+        break;
+      case 18:
+        var value = /** @type {!proto.google.protobuf.FieldOptions.OptionTargetType} */ (reader.readEnum());
+        msg.setTarget(value);
+        break;
       case 999:
         var value = new proto.google.protobuf.UninterpretedOption();
         reader.readMessage(value, proto.google.protobuf.UninterpretedOption.deserializeBinaryFromReader);
@@ -6507,6 +6579,18 @@ proto.google.protobuf.FieldOptions.serializeBinaryToWriter = function (message, 
   if (f != null) {
     writer.writeBool(10, f);
   }
+  f = /** @type {boolean} */ (jspb.Message.getField(message, 16));
+  if (f != null) {
+    writer.writeBool(16, f);
+  }
+  f = /** @type {!proto.google.protobuf.FieldOptions.OptionRetention} */ (jspb.Message.getField(message, 17));
+  if (f != null) {
+    writer.writeEnum(17, f);
+  }
+  f = /** @type {!proto.google.protobuf.FieldOptions.OptionTargetType} */ (jspb.Message.getField(message, 18));
+  if (f != null) {
+    writer.writeEnum(18, f);
+  }
   f = message.getUninterpretedOptionList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(999, f, proto.google.protobuf.UninterpretedOption.serializeBinaryToWriter);
@@ -6535,6 +6619,31 @@ proto.google.protobuf.FieldOptions.JSType = {
   JS_NORMAL: 0,
   JS_STRING: 1,
   JS_NUMBER: 2
+};
+
+/**
+ * @enum {number}
+ */
+proto.google.protobuf.FieldOptions.OptionRetention = {
+  RETENTION_UNKNOWN: 0,
+  RETENTION_RUNTIME: 1,
+  RETENTION_SOURCE: 2
+};
+
+/**
+ * @enum {number}
+ */
+proto.google.protobuf.FieldOptions.OptionTargetType = {
+  TARGET_TYPE_UNKNOWN: 0,
+  TARGET_TYPE_FILE: 1,
+  TARGET_TYPE_EXTENSION_RANGE: 2,
+  TARGET_TYPE_MESSAGE: 3,
+  TARGET_TYPE_FIELD: 4,
+  TARGET_TYPE_ONEOF: 5,
+  TARGET_TYPE_ENUM: 6,
+  TARGET_TYPE_ENUM_ENTRY: 7,
+  TARGET_TYPE_SERVICE: 8,
+  TARGET_TYPE_METHOD: 9
 };
 
 /**
@@ -6759,6 +6868,106 @@ proto.google.protobuf.FieldOptions.prototype.clearWeak = function () {
  */
 proto.google.protobuf.FieldOptions.prototype.hasWeak = function () {
   return jspb.Message.getField(this, 10) != null;
+};
+
+/**
+ * optional bool debug_redact = 16;
+ * @return {boolean}
+ */
+proto.google.protobuf.FieldOptions.prototype.getDebugRedact = function () {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 16, false));
+};
+
+/**
+ * @param {boolean} value
+ * @return {!proto.google.protobuf.FieldOptions} returns this
+ */
+proto.google.protobuf.FieldOptions.prototype.setDebugRedact = function (value) {
+  return jspb.Message.setField(this, 16, value);
+};
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.google.protobuf.FieldOptions} returns this
+ */
+proto.google.protobuf.FieldOptions.prototype.clearDebugRedact = function () {
+  return jspb.Message.setField(this, 16, undefined);
+};
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.google.protobuf.FieldOptions.prototype.hasDebugRedact = function () {
+  return jspb.Message.getField(this, 16) != null;
+};
+
+/**
+ * optional OptionRetention retention = 17;
+ * @return {!proto.google.protobuf.FieldOptions.OptionRetention}
+ */
+proto.google.protobuf.FieldOptions.prototype.getRetention = function () {
+  return /** @type {!proto.google.protobuf.FieldOptions.OptionRetention} */ (
+    jspb.Message.getFieldWithDefault(this, 17, 0)
+  );
+};
+
+/**
+ * @param {!proto.google.protobuf.FieldOptions.OptionRetention} value
+ * @return {!proto.google.protobuf.FieldOptions} returns this
+ */
+proto.google.protobuf.FieldOptions.prototype.setRetention = function (value) {
+  return jspb.Message.setField(this, 17, value);
+};
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.google.protobuf.FieldOptions} returns this
+ */
+proto.google.protobuf.FieldOptions.prototype.clearRetention = function () {
+  return jspb.Message.setField(this, 17, undefined);
+};
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.google.protobuf.FieldOptions.prototype.hasRetention = function () {
+  return jspb.Message.getField(this, 17) != null;
+};
+
+/**
+ * optional OptionTargetType target = 18;
+ * @return {!proto.google.protobuf.FieldOptions.OptionTargetType}
+ */
+proto.google.protobuf.FieldOptions.prototype.getTarget = function () {
+  return /** @type {!proto.google.protobuf.FieldOptions.OptionTargetType} */ (
+    jspb.Message.getFieldWithDefault(this, 18, 0)
+  );
+};
+
+/**
+ * @param {!proto.google.protobuf.FieldOptions.OptionTargetType} value
+ * @return {!proto.google.protobuf.FieldOptions} returns this
+ */
+proto.google.protobuf.FieldOptions.prototype.setTarget = function (value) {
+  return jspb.Message.setField(this, 18, value);
+};
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.google.protobuf.FieldOptions} returns this
+ */
+proto.google.protobuf.FieldOptions.prototype.clearTarget = function () {
+  return jspb.Message.setField(this, 18, undefined);
+};
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.google.protobuf.FieldOptions.prototype.hasTarget = function () {
+  return jspb.Message.getField(this, 18) != null;
 };
 
 /**
@@ -7013,6 +7222,7 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
       obj = {
         allowAlias: (f = jspb.Message.getBooleanField(msg, 2)) == null ? undefined : f,
         deprecated: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
+        deprecatedLegacyJsonFieldConflicts: (f = jspb.Message.getBooleanField(msg, 6)) == null ? undefined : f,
         uninterpretedOptionList: jspb.Message.toObjectList(
           msg.getUninterpretedOptionList(),
           proto.google.protobuf.UninterpretedOption.toObject,
@@ -7067,6 +7277,10 @@ proto.google.protobuf.EnumOptions.deserializeBinaryFromReader = function (msg, r
         var value = /** @type {boolean} */ (reader.readBool());
         msg.setDeprecated(value);
         break;
+      case 6:
+        var value = /** @type {boolean} */ (reader.readBool());
+        msg.setDeprecatedLegacyJsonFieldConflicts(value);
+        break;
       case 999:
         var value = new proto.google.protobuf.UninterpretedOption();
         reader.readMessage(value, proto.google.protobuf.UninterpretedOption.deserializeBinaryFromReader);
@@ -7112,6 +7326,10 @@ proto.google.protobuf.EnumOptions.serializeBinaryToWriter = function (message, w
   f = /** @type {boolean} */ (jspb.Message.getField(message, 3));
   if (f != null) {
     writer.writeBool(3, f);
+  }
+  f = /** @type {boolean} */ (jspb.Message.getField(message, 6));
+  if (f != null) {
+    writer.writeBool(6, f);
   }
   f = message.getUninterpretedOptionList();
   if (f.length > 0) {
@@ -7187,6 +7405,38 @@ proto.google.protobuf.EnumOptions.prototype.clearDeprecated = function () {
  */
 proto.google.protobuf.EnumOptions.prototype.hasDeprecated = function () {
   return jspb.Message.getField(this, 3) != null;
+};
+
+/**
+ * optional bool deprecated_legacy_json_field_conflicts = 6;
+ * @return {boolean}
+ */
+proto.google.protobuf.EnumOptions.prototype.getDeprecatedLegacyJsonFieldConflicts = function () {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 6, false));
+};
+
+/**
+ * @param {boolean} value
+ * @return {!proto.google.protobuf.EnumOptions} returns this
+ */
+proto.google.protobuf.EnumOptions.prototype.setDeprecatedLegacyJsonFieldConflicts = function (value) {
+  return jspb.Message.setField(this, 6, value);
+};
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.google.protobuf.EnumOptions} returns this
+ */
+proto.google.protobuf.EnumOptions.prototype.clearDeprecatedLegacyJsonFieldConflicts = function () {
+  return jspb.Message.setField(this, 6, undefined);
+};
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.google.protobuf.EnumOptions.prototype.hasDeprecatedLegacyJsonFieldConflicts = function () {
+  return jspb.Message.getField(this, 6) != null;
 };
 
 /**

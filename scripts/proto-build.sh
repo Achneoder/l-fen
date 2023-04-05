@@ -12,7 +12,8 @@ cp ${PWD}/node_modules/google-gax/build/protos/google/protobuf/empty.proto ./pro
 cp ${PWD}/node_modules/google-gax/build/protos/google/protobuf/field_mask.proto ./proto/google/protobuf/field_mask.proto 
 cp ${PWD}/node_modules/google-gax/build/protos/google/protobuf/timestamp.proto ./proto/google/protobuf/timestamp.proto 
 cp ${PWD}/node_modules/google-gax/build/protos/google/api/http.proto ./proto/google/api/http.proto 
-cp ${PWD}/node_modules/google-gax/build/protos/google/api/annotations.proto ./proto/google/api/annotations.proto 
+cp ${PWD}/node_modules/google-gax/build/protos/google/api/annotations.proto ./proto/google/api/annotations.proto
+cp ${PWD}/node_modules/google-gax/build/protos/google/api/launch_stage.proto ./proto/google/api/launch_stage.proto
 cp ${PWD}/node_modules/google-gax/build/protos/google/api/client.proto ./proto/google/api/client.proto 
 cp ${PWD}/node_modules/google-gax/build/protos/google/api/field_behavior.proto ./proto/google/api/field_behavior.proto 
 cp ${PWD}/node_modules/google-gax/build/protos/google/api/resource.proto ./proto/google/api/resource.proto 

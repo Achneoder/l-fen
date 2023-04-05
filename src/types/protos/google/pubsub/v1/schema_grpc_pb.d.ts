@@ -10,11 +10,16 @@ import * as google_api_client_pb from '../../../google/api/client_pb';
 import * as google_api_field_behavior_pb from '../../../google/api/field_behavior_pb';
 import * as google_api_resource_pb from '../../../google/api/resource_pb';
 import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
+import * as google_protobuf_timestamp_pb from 'google-protobuf/google/protobuf/timestamp_pb';
 
 interface ISchemaServiceService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
   createSchema: ISchemaServiceService_ICreateSchema;
   getSchema: ISchemaServiceService_IGetSchema;
   listSchemas: ISchemaServiceService_IListSchemas;
+  listSchemaRevisions: ISchemaServiceService_IListSchemaRevisions;
+  commitSchema: ISchemaServiceService_ICommitSchema;
+  rollbackSchema: ISchemaServiceService_IRollbackSchema;
+  deleteSchemaRevision: ISchemaServiceService_IDeleteSchemaRevision;
   deleteSchema: ISchemaServiceService_IDeleteSchema;
   validateSchema: ISchemaServiceService_IValidateSchema;
   validateMessage: ISchemaServiceService_IValidateMessage;
@@ -52,6 +57,52 @@ interface ISchemaServiceService_IListSchemas
   requestDeserialize: grpc.deserialize<google_pubsub_v1_schema_pb.ListSchemasRequest>;
   responseSerialize: grpc.serialize<google_pubsub_v1_schema_pb.ListSchemasResponse>;
   responseDeserialize: grpc.deserialize<google_pubsub_v1_schema_pb.ListSchemasResponse>;
+}
+interface ISchemaServiceService_IListSchemaRevisions
+  extends grpc.MethodDefinition<
+    google_pubsub_v1_schema_pb.ListSchemaRevisionsRequest,
+    google_pubsub_v1_schema_pb.ListSchemaRevisionsResponse
+  > {
+  path: '/google.pubsub.v1.SchemaService/ListSchemaRevisions';
+  requestStream: false;
+  responseStream: false;
+  requestSerialize: grpc.serialize<google_pubsub_v1_schema_pb.ListSchemaRevisionsRequest>;
+  requestDeserialize: grpc.deserialize<google_pubsub_v1_schema_pb.ListSchemaRevisionsRequest>;
+  responseSerialize: grpc.serialize<google_pubsub_v1_schema_pb.ListSchemaRevisionsResponse>;
+  responseDeserialize: grpc.deserialize<google_pubsub_v1_schema_pb.ListSchemaRevisionsResponse>;
+}
+interface ISchemaServiceService_ICommitSchema
+  extends grpc.MethodDefinition<google_pubsub_v1_schema_pb.CommitSchemaRequest, google_pubsub_v1_schema_pb.Schema> {
+  path: '/google.pubsub.v1.SchemaService/CommitSchema';
+  requestStream: false;
+  responseStream: false;
+  requestSerialize: grpc.serialize<google_pubsub_v1_schema_pb.CommitSchemaRequest>;
+  requestDeserialize: grpc.deserialize<google_pubsub_v1_schema_pb.CommitSchemaRequest>;
+  responseSerialize: grpc.serialize<google_pubsub_v1_schema_pb.Schema>;
+  responseDeserialize: grpc.deserialize<google_pubsub_v1_schema_pb.Schema>;
+}
+interface ISchemaServiceService_IRollbackSchema
+  extends grpc.MethodDefinition<google_pubsub_v1_schema_pb.RollbackSchemaRequest, google_pubsub_v1_schema_pb.Schema> {
+  path: '/google.pubsub.v1.SchemaService/RollbackSchema';
+  requestStream: false;
+  responseStream: false;
+  requestSerialize: grpc.serialize<google_pubsub_v1_schema_pb.RollbackSchemaRequest>;
+  requestDeserialize: grpc.deserialize<google_pubsub_v1_schema_pb.RollbackSchemaRequest>;
+  responseSerialize: grpc.serialize<google_pubsub_v1_schema_pb.Schema>;
+  responseDeserialize: grpc.deserialize<google_pubsub_v1_schema_pb.Schema>;
+}
+interface ISchemaServiceService_IDeleteSchemaRevision
+  extends grpc.MethodDefinition<
+    google_pubsub_v1_schema_pb.DeleteSchemaRevisionRequest,
+    google_pubsub_v1_schema_pb.Schema
+  > {
+  path: '/google.pubsub.v1.SchemaService/DeleteSchemaRevision';
+  requestStream: false;
+  responseStream: false;
+  requestSerialize: grpc.serialize<google_pubsub_v1_schema_pb.DeleteSchemaRevisionRequest>;
+  requestDeserialize: grpc.deserialize<google_pubsub_v1_schema_pb.DeleteSchemaRevisionRequest>;
+  responseSerialize: grpc.serialize<google_pubsub_v1_schema_pb.Schema>;
+  responseDeserialize: grpc.deserialize<google_pubsub_v1_schema_pb.Schema>;
 }
 interface ISchemaServiceService_IDeleteSchema
   extends grpc.MethodDefinition<google_pubsub_v1_schema_pb.DeleteSchemaRequest, google_protobuf_empty_pb.Empty> {
@@ -98,6 +149,19 @@ export interface ISchemaServiceServer extends grpc.UntypedServiceImplementation 
   listSchemas: grpc.handleUnaryCall<
     google_pubsub_v1_schema_pb.ListSchemasRequest,
     google_pubsub_v1_schema_pb.ListSchemasResponse
+  >;
+  listSchemaRevisions: grpc.handleUnaryCall<
+    google_pubsub_v1_schema_pb.ListSchemaRevisionsRequest,
+    google_pubsub_v1_schema_pb.ListSchemaRevisionsResponse
+  >;
+  commitSchema: grpc.handleUnaryCall<google_pubsub_v1_schema_pb.CommitSchemaRequest, google_pubsub_v1_schema_pb.Schema>;
+  rollbackSchema: grpc.handleUnaryCall<
+    google_pubsub_v1_schema_pb.RollbackSchemaRequest,
+    google_pubsub_v1_schema_pb.Schema
+  >;
+  deleteSchemaRevision: grpc.handleUnaryCall<
+    google_pubsub_v1_schema_pb.DeleteSchemaRevisionRequest,
+    google_pubsub_v1_schema_pb.Schema
   >;
   deleteSchema: grpc.handleUnaryCall<google_pubsub_v1_schema_pb.DeleteSchemaRequest, google_protobuf_empty_pb.Empty>;
   validateSchema: grpc.handleUnaryCall<
@@ -155,6 +219,75 @@ export interface ISchemaServiceClient {
     metadata: grpc.Metadata,
     options: Partial<grpc.CallOptions>,
     callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.ListSchemasResponse) => void
+  ): grpc.ClientUnaryCall;
+  listSchemaRevisions(
+    request: google_pubsub_v1_schema_pb.ListSchemaRevisionsRequest,
+    callback: (
+      error: grpc.ServiceError | null,
+      response: google_pubsub_v1_schema_pb.ListSchemaRevisionsResponse
+    ) => void
+  ): grpc.ClientUnaryCall;
+  listSchemaRevisions(
+    request: google_pubsub_v1_schema_pb.ListSchemaRevisionsRequest,
+    metadata: grpc.Metadata,
+    callback: (
+      error: grpc.ServiceError | null,
+      response: google_pubsub_v1_schema_pb.ListSchemaRevisionsResponse
+    ) => void
+  ): grpc.ClientUnaryCall;
+  listSchemaRevisions(
+    request: google_pubsub_v1_schema_pb.ListSchemaRevisionsRequest,
+    metadata: grpc.Metadata,
+    options: Partial<grpc.CallOptions>,
+    callback: (
+      error: grpc.ServiceError | null,
+      response: google_pubsub_v1_schema_pb.ListSchemaRevisionsResponse
+    ) => void
+  ): grpc.ClientUnaryCall;
+  commitSchema(
+    request: google_pubsub_v1_schema_pb.CommitSchemaRequest,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  commitSchema(
+    request: google_pubsub_v1_schema_pb.CommitSchemaRequest,
+    metadata: grpc.Metadata,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  commitSchema(
+    request: google_pubsub_v1_schema_pb.CommitSchemaRequest,
+    metadata: grpc.Metadata,
+    options: Partial<grpc.CallOptions>,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  rollbackSchema(
+    request: google_pubsub_v1_schema_pb.RollbackSchemaRequest,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  rollbackSchema(
+    request: google_pubsub_v1_schema_pb.RollbackSchemaRequest,
+    metadata: grpc.Metadata,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  rollbackSchema(
+    request: google_pubsub_v1_schema_pb.RollbackSchemaRequest,
+    metadata: grpc.Metadata,
+    options: Partial<grpc.CallOptions>,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  deleteSchemaRevision(
+    request: google_pubsub_v1_schema_pb.DeleteSchemaRevisionRequest,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  deleteSchemaRevision(
+    request: google_pubsub_v1_schema_pb.DeleteSchemaRevisionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  deleteSchemaRevision(
+    request: google_pubsub_v1_schema_pb.DeleteSchemaRevisionRequest,
+    metadata: grpc.Metadata,
+    options: Partial<grpc.CallOptions>,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
   ): grpc.ClientUnaryCall;
   deleteSchema(
     request: google_pubsub_v1_schema_pb.DeleteSchemaRequest,
@@ -249,6 +382,75 @@ export class SchemaServiceClient extends grpc.Client implements ISchemaServiceCl
     metadata: grpc.Metadata,
     options: Partial<grpc.CallOptions>,
     callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.ListSchemasResponse) => void
+  ): grpc.ClientUnaryCall;
+  public listSchemaRevisions(
+    request: google_pubsub_v1_schema_pb.ListSchemaRevisionsRequest,
+    callback: (
+      error: grpc.ServiceError | null,
+      response: google_pubsub_v1_schema_pb.ListSchemaRevisionsResponse
+    ) => void
+  ): grpc.ClientUnaryCall;
+  public listSchemaRevisions(
+    request: google_pubsub_v1_schema_pb.ListSchemaRevisionsRequest,
+    metadata: grpc.Metadata,
+    callback: (
+      error: grpc.ServiceError | null,
+      response: google_pubsub_v1_schema_pb.ListSchemaRevisionsResponse
+    ) => void
+  ): grpc.ClientUnaryCall;
+  public listSchemaRevisions(
+    request: google_pubsub_v1_schema_pb.ListSchemaRevisionsRequest,
+    metadata: grpc.Metadata,
+    options: Partial<grpc.CallOptions>,
+    callback: (
+      error: grpc.ServiceError | null,
+      response: google_pubsub_v1_schema_pb.ListSchemaRevisionsResponse
+    ) => void
+  ): grpc.ClientUnaryCall;
+  public commitSchema(
+    request: google_pubsub_v1_schema_pb.CommitSchemaRequest,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  public commitSchema(
+    request: google_pubsub_v1_schema_pb.CommitSchemaRequest,
+    metadata: grpc.Metadata,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  public commitSchema(
+    request: google_pubsub_v1_schema_pb.CommitSchemaRequest,
+    metadata: grpc.Metadata,
+    options: Partial<grpc.CallOptions>,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  public rollbackSchema(
+    request: google_pubsub_v1_schema_pb.RollbackSchemaRequest,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  public rollbackSchema(
+    request: google_pubsub_v1_schema_pb.RollbackSchemaRequest,
+    metadata: grpc.Metadata,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  public rollbackSchema(
+    request: google_pubsub_v1_schema_pb.RollbackSchemaRequest,
+    metadata: grpc.Metadata,
+    options: Partial<grpc.CallOptions>,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  public deleteSchemaRevision(
+    request: google_pubsub_v1_schema_pb.DeleteSchemaRevisionRequest,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  public deleteSchemaRevision(
+    request: google_pubsub_v1_schema_pb.DeleteSchemaRevisionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
+  ): grpc.ClientUnaryCall;
+  public deleteSchemaRevision(
+    request: google_pubsub_v1_schema_pb.DeleteSchemaRevisionRequest,
+    metadata: grpc.Metadata,
+    options: Partial<grpc.CallOptions>,
+    callback: (error: grpc.ServiceError | null, response: google_pubsub_v1_schema_pb.Schema) => void
   ): grpc.ClientUnaryCall;
   public deleteSchema(
     request: google_pubsub_v1_schema_pb.DeleteSchemaRequest,
