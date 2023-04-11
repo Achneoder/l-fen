@@ -1,3 +1,9 @@
+# [1.1.0-alpha.1](https://github.com/Achneoder/l-fen/compare/v1.0.7...v1.1.0-alpha.1) (2023-04-11)
+
+### Features
+
+- **extensions:** load custom extensions ([4042024](https://github.com/Achneoder/l-fen/commit/40420242bd7f31208e9c0205312bc86dc821d8d7))
+
 ## [1.0.7](https://github.com/Achneoder/l-fen/compare/v1.0.6...v1.0.7) (2023-04-05)
 
 ### Bug Fixes
