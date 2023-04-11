@@ -15,6 +15,7 @@ import { BucketEvent, PubSubEvent } from '../types/gcloud.interface';
 import { Provider } from '../types/provider.enum';
 import { HttpServiceRequest } from '../types/service-event.interface';
 import { TriggerType } from '../types/trigger-type.enum';
+import { ExtensionCollector } from './extension-collector';
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -31,6 +32,9 @@ async function bootService() {
   // mock all endpoints used by google-cloud
   mockBucketEndpoints();
   mockAuthEndpoints();
+
+  // load all extensions
+  await new ExtensionCollector(config).executeExtensions();
 
   logger.debug(`loading service with type ${serviceConfig.triggerType}`, { label: 'bootService' });
   if (serviceConfig.triggerType === TriggerType.BUCKET) {

@@ -11,7 +11,8 @@
     "emitDecoratorMetadata": true,
     "removeComments": true,
     "inlineSourceMap": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "declaration": true
   },
   "include": ["src/**/*"],
   "exclude": ["lib", "node_modules", "test", "**/*spec.ts"]

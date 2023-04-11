@@ -90,7 +90,8 @@ When everything is set up, just call `npx l-fen` to do it's magic.
       },
       "envVars": {}
     }
-  ]
+  ],
+  "extensions": ["/path/to/my/extension.js"]
 }
 ```
 
@@ -140,3 +141,18 @@ The orchestrator is loading the `.fenrc.json`, managing all Functions, providing
 
 It's also possible to start the bootloader without the orchestrator by running something like
 `npx l-fen-boot --event='{\"bucket\": \"user\", \"name\": \"111/b.json\"}' --path="../../../path/to/function/index.js" --entryPoint="handleEvent" --name="name-of-the-function"`
+
+### Custom extension
+
+l-fen allows adding custom extensions that are executed for each loaded Function right before starting it.
+
+Create your extension by exporting a class implementing the `LFenExtension` interface from `l-fen/types/extension.interface` and adding the absolute path to the config:
+
+```jsonc
+{
+  // all the other stuff, see above
+  ...
+  // here we add out extension
+  "extensions": ["/path/to/my/extension.js"]
+}
+```

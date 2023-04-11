@@ -27,6 +27,7 @@ export interface Config {
   loglevel: 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly';
   provider: ProviderConfig;
   services: Array<ServiceConfig>;
+  extensions?: Array<string>;
 }
 
 export interface ProviderConfig {
