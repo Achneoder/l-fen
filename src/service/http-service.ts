@@ -52,6 +52,7 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
   }
 
   public canBeExecuted(event: HttpServiceRequest): boolean {
-    return event.url.endsWith(this.serviceConfig.name);
+    // checks if the first path segment matches the services name
+    return event.url.startsWith('/' + this.serviceConfig.name);
   }
 }
