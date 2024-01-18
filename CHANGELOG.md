@@ -1,3 +1,9 @@
+# [1.1.0-alpha.2](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.1...v1.1.0-alpha.2) (2024-01-18)
+
+### Bug Fixes
+
+- **http:** find service by checking request url to start with services name ([24e3f73](https://github.com/Achneoder/l-fen/commit/24e3f7345c527c747e7f021f57ad1df19451061b))
+
 # [1.1.0-alpha.1](https://github.com/Achneoder/l-fen/compare/v1.0.7...v1.1.0-alpha.1) (2023-04-11)
 
 ### Features
