@@ -130,13 +130,22 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
     );
   });
 
-  let response: request.Response;
   if (requestData.type === 'QUERY') {
-    response = await scope.query(requestData.data);
+    scope = scope.query(requestData.data);
   } else {
     logger.debug('sending post request to %s with data %s', event.path, requestData.data);
-    response = await scope.send(requestData.data);
+    scope = scope.send(requestData.data);
   }
+  Object.entries(functionRequest.headers).forEach(([headerKey, headerValue]) => {
+    scope = scope.set(headerKey, headerValue);
+    logger.debug(
+      'set header %s = %s for %s',
+      headerKey,
+      headerValue,
+      `${functionRequest.method.toUpperCase()} ${[serviceConfig.name, event.path].filter((v) => !!v).join('/')}`
+    );
+  });
+  const response = await scope;
   // we need the plain JSON as a string in stdout, so we use the good ol' console.log
   console.log(
     JSON.stringify({
