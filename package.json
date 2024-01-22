@@ -4,6 +4,7 @@
   "description": "sandbox to simulate full serverless function environment",
   "main": "lib/index.js",
   "scripts": {
+    "postinstall": "npx simple-git-hooks",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:proto": ". ./scripts/proto-build.sh",
     "build": "npm run build:proto && npx tsc",
@@ -41,7 +42,7 @@
     "lint-staged": "^13.0.0",
     "prettier": "^2.2.1",
     "semantic-release": "^21.0.0",
-    "simple-git-hooks": "^2.2.0",
+    "simple-git-hooks": "^2.9.0",
     "typescript": "^5.0.0"
   },
   "dependencies": {
