@@ -1,6 +1,6 @@
 import nock from 'nock';
 
-export function mockEndoints(): void {
+export function mockOAuthV4Token(): void {
   // mock the auth api
   nock('https://www.googleapis.com', { encodedQueryParams: true })
     .persist()
@@ -8,7 +8,9 @@ export function mockEndoints(): void {
     .reply(200, () => {
       return {};
     });
+}
 
+export function mockPublicCertificates(): void {
   // mock firebase auth request
   nock('https://www.googleapis.com', { encodedQueryParams: true })
     .persist()
@@ -23,4 +25,9 @@ export function mockEndoints(): void {
       '7cf7f8727091e4c77aa995db60743b7dd2bb70b5':
         '-----BEGIN CERTIFICATE-----\nMIIDHTCCAgWgAwIBAgIJAIqVi9h5GUZ3MA0GCSqGSIb3DQEBBQUAMDExLzAtBgNV\nBAMMJnNlY3VyZXRva2VuLnN5c3RlbS5nc2VydmljZWFjY291bnQuY29tMB4XDTI0\nMDEwOTA3MzIwN1oXDTI0MDEyNTE5NDcwN1owMTEvMC0GA1UEAwwmc2VjdXJldG9r\nZW4uc3lzdGVtLmdzZXJ2aWNlYWNjb3VudC5jb20wggEiMA0GCSqGSIb3DQEBAQUA\nA4IBDwAwggEKAoIBAQCUcjjtp36jO9jN05a9GU/o5cw1P5JSzO+TFA5zmVONZoHw\nCrYBWy0I2b01w646ynT1dZsDpwfYN9/gOFrEkEUj2Hc03UUuO0LV5cxdOe1Ze7cX\n4iX/+ycvAKb4W8+ZK+uaiMYhoDwo8U+hF27U8jBjcDGvLRvT1PatZzppaOW/zeVt\nSCmc3lYzyb81Pf0J8bH53pzP4iCljPCnh59NgumfU0tOZzVxHq94vkUMG1HHFLNO\n/JnPSOfbQCJfdW1097xM/5BLYOtXqyHhnXHEJREKnhve59rg51q1wcXzHtZDXrQh\n1AR5OZsjsZW8j23FxDn2aPmPxkH4qZTl259hkhjZAgMBAAGjODA2MAwGA1UdEwEB\n/wQCMAAwDgYDVR0PAQH/BAQDAgeAMBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMCMA0G\nCSqGSIb3DQEBBQUAA4IBAQCLOdTu4aDNs5cgncpoh7PHtPoIdn+tn27CwEujPM+u\nnIpnQ92PeHXbXxsl7J/rzXGzyq7RhB0UqtZMT3FgKD80sr0pDI+WtwgGV4QyVcXv\nCXKbaOMJMmlUVFy0kVGjoi4XJoFqt1UXw5nfV+PxWNpYLukRetRvbhztpM5ZgVg1\n99tdKDcCmRSvgGcI3ejEWdtsTEbn4BaXRvxSNU9/Nf82dcCXNBgLgBXWEkioYidT\n2nGIR2m2EAlGnTxqMUh7I/ZrLWg9hXJHTQPRUJDL59kOxCgBUmVkmUfA+m5mv5t0\nBC8UojdMn77yvpsWhmULueSOY3BI+CqZPmJkq+En0ptc\n-----END CERTIFICATE-----\n'
     });
+}
+
+export function mockEndoints(): void {
+  mockOAuthV4Token();
+  mockPublicCertificates();
 }
