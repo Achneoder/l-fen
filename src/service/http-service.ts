@@ -1,13 +1,15 @@
 import { spawn } from 'child_process';
-import path, { parse } from 'path';
+import path from 'path';
 import { Logger } from '../helper/logger';
 import { HttpServiceRequest, HttpServiceResponse } from '../types/service-event.interface';
 import { Service } from './service.abstract';
+import { v4 } from 'uuid';
 
 export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse> {
-  private readonly logs: Array<string> = [];
+  private readonly logs: Record<string, Array<string>> = {};
 
   public exec(event: HttpServiceRequest): Promise<HttpServiceResponse> {
+    const functionUid = v4();
     const logger = Logger.getLogger();
     return new Promise((resolve, reject) => {
       const args: Array<string> = [
@@ -32,15 +34,15 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
       });
       spawnedProcess.stdout.on('data', (data) => {
         logger.verbose(data.toString(), { label: 'HttpService:exec' });
-        this.logs.push(data.toString());
+        this.addToLog(functionUid, data.toString());
         if (this.isHttpResponse(data.toString())) {
           spawnedProcess.kill();
         }
       });
-      spawnedProcess.stderr.on('data', (data) => this.logs.push(data.toString()));
+      spawnedProcess.stderr.on('data', (data) => this.addToLog(functionUid, data.toString()));
       spawnedProcess.on('close', () => {
         logger.info('-- function %s closed --', this.serviceConfig.name, { label: 'HttpService:exec' });
-        const lastLog = this.logs.find((log: string) => {
+        const lastLog = this.logs[functionUid]?.find((log: string) => {
           try {
             return this.isHttpResponse(log);
           } catch (error) {
@@ -55,6 +57,13 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
         }
       });
     });
+  }
+
+  private addToLog(uid: string, log: string): void {
+    if (this.logs[uid]) {
+      this.logs[uid] = [];
+    }
+    this.logs[uid].push(log);
   }
 
   private isHttpResponse(log: string | HttpServiceResponse): boolean {

@@ -126,7 +126,7 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
       'set header %s = %s for %s',
       headerKey,
       headerValue,
-      `${functionRequest.method.toUpperCase()} ${serviceConfig.name}/${event.path}`
+      `${functionRequest.method.toUpperCase()} ${[serviceConfig.name, event.path].filter((v) => !!v).join('/')}`
     );
   });
 
