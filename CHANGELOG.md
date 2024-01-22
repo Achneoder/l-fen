@@ -1,3 +1,9 @@
+# [1.1.0-alpha.16](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.15...v1.1.0-alpha.16) (2024-01-22)
+
+### Bug Fixes
+
+- **HTTP Service:** ensure that logs array exists ([a774b5a](https://github.com/Achneoder/l-fen/commit/a774b5a6c42a64390fc8fd872b0135f9520366c4))
+
 # [1.1.0-alpha.15](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.14...v1.1.0-alpha.15) (2024-01-22)
 
 # [1.1.0-alpha.14](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.13...v1.1.0-alpha.14) (2024-01-22)
