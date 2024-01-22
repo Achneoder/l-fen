@@ -1,6 +1,6 @@
 {
   "name": "l-fen",
-  "version": "1.1.0-alpha.17",
+  "version": "1.1.0-alpha.18",
   "description": "sandbox to simulate full serverless function environment",
   "main": "lib/index.js",
   "scripts": {
