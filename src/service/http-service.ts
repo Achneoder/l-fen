@@ -1,5 +1,5 @@
 import { spawn } from 'child_process';
-import path from 'path';
+import path, { parse } from 'path';
 import { Logger } from '../helper/logger';
 import { HttpServiceRequest, HttpServiceResponse } from '../types/service-event.interface';
 import { Service } from './service.abstract';
@@ -36,14 +36,17 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
       });
       spawnedProcess.stderr.on('data', (data) => this.logs.push(data.toString()));
       spawnedProcess.on('close', () => {
-        const lastLog = this.logs[this.logs.length - 1];
-        if (this.logs.length > 0) {
+        const lastLog = this.logs.find((log: string) => {
           try {
-            const response: HttpServiceResponse = JSON.parse(lastLog);
-            resolve(response);
-          } catch (err) {
-            reject(`last log was no JSON: ${lastLog}`);
+            const parsedLog = JSON.parse(log);
+            return parsedLog.isFunctionResponse;
+          } catch (error) {
+            return false;
           }
+        });
+        if (lastLog) {
+          const response: HttpServiceResponse = JSON.parse(lastLog);
+          resolve(response);
         } else {
           reject(`${this.serviceConfig.name} failed - no response`);
         }

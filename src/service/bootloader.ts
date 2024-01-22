@@ -141,7 +141,8 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
     JSON.stringify({
       headers: response.headers,
       body: response.body,
-      status: response.statusCode
+      status: response.statusCode,
+      isFunctionResponse: true
     })
   );
 }
