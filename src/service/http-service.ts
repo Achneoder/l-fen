@@ -9,9 +9,9 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
   private readonly logs: Record<string, Array<string>> = {};
 
   public exec(event: HttpServiceRequest): Promise<HttpServiceResponse> {
-    const functionUid = v4();
     const logger = Logger.getLogger();
     return new Promise((resolve, reject) => {
+      const functionUid = v4();
       const args: Array<string> = [
         `${__dirname}/bootloader.js`,
         '--event',
@@ -25,7 +25,7 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
         '--name',
         this.serviceConfig.name
       ];
-      logger.info(`-- executing %s --`, this.serviceConfig.name, { label: 'HttpService:exec' });
+      logger.info(`-- executing %s with id %s--`, this.serviceConfig.name, functionUid, { label: 'HttpService:exec' });
       const spawnedProcess = spawn('node', args, {
         env: {
           ...process.env,
@@ -41,7 +41,12 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
       });
       spawnedProcess.stderr.on('data', (data) => this.addToLog(functionUid, data.toString()));
       spawnedProcess.on('close', () => {
-        logger.info('-- function %s closed --', this.serviceConfig.name, { label: 'HttpService:exec' });
+        logger.info('-- function %s with id %s closed --', this.serviceConfig.name, functionUid, {
+          label: 'HttpService:exec'
+        });
+        logger.debug('checking for last response of function %s with uid %s', this.serviceConfig.name, functionUid, {
+          label: 'HttpService:exec'
+        });
         const lastLog = this.logs[functionUid]?.find((log: string) => {
           try {
             return this.isHttpResponse(log);
@@ -50,6 +55,9 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
           }
         });
         if (lastLog) {
+          logger.debug('last response of function %s with uid %s: %s', this.serviceConfig.name, functionUid, lastLog, {
+            label: 'HttpService:exec'
+          });
           const response: HttpServiceResponse = JSON.parse(lastLog);
           resolve(response);
         } else {
