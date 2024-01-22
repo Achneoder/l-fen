@@ -1,3 +1,13 @@
+# [1.1.0-alpha.5](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.4...v1.1.0-alpha.5) (2024-01-22)
+
+### Bug Fixes
+
+- **Bootloader:** proper iterate HTTP headers ([5d484af](https://github.com/Achneoder/l-fen/commit/5d484af8a7e2d8c5a1d689c9d0910452ceeff4e8))
+
+### Reverts
+
+- Revert "fix(Logger): set loglevel via config in bootloader" ([b193653](https://github.com/Achneoder/l-fen/commit/b193653c069c68829eee4a7e874ca60076b3ec67))
+
 # [1.1.0-alpha.4](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.3...v1.1.0-alpha.4) (2024-01-22)
 
 ### Bug Fixes
