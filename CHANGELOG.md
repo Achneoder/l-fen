@@ -1,3 +1,9 @@
+# [1.1.0-alpha.14](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.13...v1.1.0-alpha.14) (2024-01-22)
+
+### Bug Fixes
+
+- **HTTP Function:** return correct response ([55f9a2c](https://github.com/Achneoder/l-fen/commit/55f9a2c72e9c780aa7ecb1a4e88a4f9e2fb65958))
+
 # [1.1.0-alpha.13](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.12...v1.1.0-alpha.13) (2024-01-22)
 
 # [1.1.0-alpha.12](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.11...v1.1.0-alpha.12) (2024-01-22)
