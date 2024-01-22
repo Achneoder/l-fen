@@ -20,13 +20,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 async function bootService() {
-  const logger = Logger.getLogger();
-
   //@ts-ignore
   const argv: BootloaderArgs = yargs(hideBin(process.argv)).argv;
+  const config = getConfig(argv.config);
+
+  Logger.loglevel = config.loglevel;
+  const logger = Logger.getLogger();
   logger.verbose('executing with args %s', JSON.stringify(argv), { lable: 'bootService' });
 
-  const config = getConfig(argv.config);
   const serviceConfig = config.services.find((service: ServiceConfig) => service.name === argv.name);
   logger.verbose(JSON.stringify(serviceConfig), { label: 'bootService' });
   // mock all endpoints used by google-cloud

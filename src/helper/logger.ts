@@ -3,13 +3,13 @@ import { Console } from 'winston/lib/winston/transports';
 import { getConfig } from '../parser';
 
 export class Logger {
-  private static readonly config = getConfig();
+  public static loglevel = getConfig()?.loglevel || 'info';
   private static loggerInstance: LoggerInstance;
 
   public static getLogger(): LoggerInstance {
     if (!Logger.loggerInstance) {
       Logger.loggerInstance = createLogger({
-        level: Logger.config.loglevel || 'info',
+        level: Logger.loglevel,
         format: format.combine(
           format.colorize(),
           format.timestamp(),
