@@ -73,21 +73,42 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
   const testRequest: request.SuperTest<request.Test> = request(app);
 
   let scope: request.Test;
+  let requestData: { type: 'QUERY' | 'BODY'; data: Record<string, unknown> };
   switch (functionRequest.method.toUpperCase()) {
     case 'GET':
-      scope = testRequest.get(event.path).query(functionRequest.query);
+      scope = testRequest.get(event.path);
+      requestData = {
+        type: 'QUERY',
+        data: functionRequest.query
+      };
       break;
     case 'POST':
-      scope = testRequest.post(event.path).send(functionRequest.body);
+      scope = testRequest.post(event.path);
+      requestData = {
+        type: 'BODY',
+        data: functionRequest.body
+      };
       break;
     case 'DELETE':
-      scope = testRequest.delete(event.path).query(functionRequest.body);
+      scope = testRequest.delete(event.path);
+      requestData = {
+        type: 'QUERY',
+        data: functionRequest.query
+      };
       break;
     case 'PUT':
-      scope = testRequest.put(event.path).send(functionRequest.body);
+      scope = testRequest.put(event.path);
+      requestData = {
+        type: 'BODY',
+        data: functionRequest.body
+      };
       break;
     case 'PATCH':
-      scope = testRequest.patch(event.path).send(functionRequest.body);
+      scope = testRequest.patch(event.path);
+      requestData = {
+        type: 'BODY',
+        data: functionRequest.body
+      };
       break;
     default:
       throw new Error('HTTP method not yet implemented');
@@ -95,18 +116,26 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
   logger.debug(
     'sending %s request with %s %s',
     functionRequest.method.toUpperCase(),
-    functionRequest.method.toUpperCase() === 'GET' ? 'query' : 'body',
-    functionRequest.method.toUpperCase() === 'GET'
-      ? JSON.stringify(functionRequest.query)
-      : JSON.stringify(functionRequest.body),
+    requestData.type,
+    JSON.stringify(requestData.data),
     { label: 'bootHttpService' }
   );
   Object.values(functionRequest.headers).forEach(([headerKey, headerValue]) => {
     scope.set(headerKey, headerValue);
+    logger.debug(
+      'set header %s = %s for %s',
+      headerKey,
+      headerValue,
+      `${functionRequest.method.toUpperCase()} ${serviceConfig.name}/${event.path}`
+    );
   });
 
-  //@ts-ignore
-  const response: request.Response = await scope;
+  let response: request.Response;
+  if (requestData.type === 'QUERY') {
+    response = await scope.query(requestData.data);
+  } else {
+    response = await scope.send(requestData.data);
+  }
   // we need the plain JSON as a string in stdout, so we use the good ol' console.log
   console.log(
     JSON.stringify({
