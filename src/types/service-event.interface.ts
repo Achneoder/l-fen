@@ -22,6 +22,7 @@ export interface HttpServiceResponse extends Event {
   headers: Record<string, string>;
   body: Record<string, unknown>;
   status: number;
+  isFunctionResponse?: boolean;
 }
 
 export interface PubSubServiceEvent extends Event {

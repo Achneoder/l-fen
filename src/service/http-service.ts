@@ -33,14 +33,16 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
       spawnedProcess.stdout.on('data', (data) => {
         logger.verbose(data.toString(), { label: 'HttpService:exec' });
         this.logs.push(data.toString());
+        if (this.isHttpResponse(data.toString())) {
+          spawnedProcess.kill();
+        }
       });
       spawnedProcess.stderr.on('data', (data) => this.logs.push(data.toString()));
       spawnedProcess.on('close', () => {
         logger.info('-- function %s closed --', this.serviceConfig.name, { label: 'HttpService:exec' });
         const lastLog = this.logs.find((log: string) => {
           try {
-            const parsedLog = JSON.parse(log);
-            return parsedLog.isFunctionResponse;
+            return this.isHttpResponse(log);
           } catch (error) {
             return false;
           }
@@ -53,6 +55,19 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
         }
       });
     });
+  }
+
+  private isHttpResponse(log: string | HttpServiceResponse): boolean {
+    if (typeof log === 'string') {
+      try {
+        const parsedLog = JSON.parse(log);
+        return parsedLog.isFunctionResponse;
+      } catch (error) {
+        return false;
+      }
+    } else {
+      return log.isFunctionResponse;
+    }
   }
 
   public canBeExecuted(event: HttpServiceRequest): boolean {
