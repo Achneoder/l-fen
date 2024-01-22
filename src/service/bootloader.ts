@@ -134,6 +134,7 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
   if (requestData.type === 'QUERY') {
     response = await scope.query(requestData.data);
   } else {
+    logger.debug('sending post request to %s with data %s', event.path, requestData.data);
     response = await scope.send(requestData.data);
   }
   // we need the plain JSON as a string in stdout, so we use the good ol' console.log
