@@ -36,6 +36,7 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
       });
       spawnedProcess.stderr.on('data', (data) => this.logs.push(data.toString()));
       spawnedProcess.on('close', () => {
+        logger.info('-- function %s closed --', this.serviceConfig.name, { label: 'HttpService:exec' });
         const lastLog = this.logs.find((log: string) => {
           try {
             const parsedLog = JSON.parse(log);
