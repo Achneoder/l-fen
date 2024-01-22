@@ -1,3 +1,5 @@
+# [1.1.0-alpha.10](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.9...v1.1.0-alpha.10) (2024-01-22)
+
 # [1.1.0-alpha.9](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.8...v1.1.0-alpha.9) (2024-01-22)
 
 ### Bug Fixes
