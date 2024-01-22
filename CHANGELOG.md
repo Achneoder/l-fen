@@ -1,3 +1,9 @@
+# [1.1.0-alpha.9](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.8...v1.1.0-alpha.9) (2024-01-22)
+
+### Bug Fixes
+
+- **HTTP Function:** extract http response from logs instead of using last log ([a4cc445](https://github.com/Achneoder/l-fen/commit/a4cc4459a9d675fff61a7ca12e7fbbe5e1b2ce86))
+
 # [1.1.0-alpha.8](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.7...v1.1.0-alpha.8) (2024-01-22)
 
 # [1.1.0-alpha.7](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.6...v1.1.0-alpha.7) (2024-01-22)
