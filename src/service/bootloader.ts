@@ -63,12 +63,12 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
   app.use(file[argv.entryPoint]);
   // const entryPoint: HttpFunctionHandler = app;
 
-  process.env = { ...process.env, ...(serviceConfig.envVars || {}) };
-  logger.debug('set env vars %s', JSON.stringify(process.env), 'bootHttpService');
-
   if (getConfig().provider.name === Provider.GCP) {
     process.env.GOOGLE_APPLICATION_CREDENTIALS = './.fen/gcp_service_account.json';
   }
+  process.env = { ...process.env, ...(serviceConfig.envVars || {}) };
+  logger.debug('set env vars %s', JSON.stringify(process.env), 'bootHttpService');
+
   logger.debug('preparing http service %s', argv.path, { label: 'bootHttpService' });
   const testRequest: request.SuperTest<request.Test> = request(app);
 
@@ -152,11 +152,11 @@ async function bootBucketService(argv: BootloaderArgs, serviceConfig: ServiceCon
   const file = require(argv.path);
   const entryPoint: BucketFunctionHandler = file[argv.entryPoint];
 
-  process.env = { ...process.env, ...(serviceConfig.envVars || {}) };
-
   if (getConfig().provider.name === Provider.GCP) {
     process.env.GOOGLE_APPLICATION_CREDENTIALS = './.fen/gcp_service_account.json';
   }
+
+  process.env = { ...process.env, ...(serviceConfig.envVars || {}) };
   // to make sure that bootBucketService returns a Promise, we call await on the entryPoint, even if it does not return a Promise
   return await entryPoint(event);
 }
@@ -167,11 +167,11 @@ async function bootPubSubService(argv: BootloaderArgs, serviceConfig: ServiceCon
   const file = require(argv.path);
   const entryPoint: PubSubFunctionHandler = file[argv.entryPoint];
 
-  process.env = { ...process.env, ...(serviceConfig.envVars || {}) };
-
   if (getConfig().provider.name === Provider.GCP) {
     process.env.GOOGLE_APPLICATION_CREDENTIALS = './.fen/gcp_service_account.json';
   }
+
+  process.env = { ...process.env, ...(serviceConfig.envVars || {}) };
   // to make sure that bootBucketService returns a Promise, we call await on the entryPoint, even if it does not return a Promise
   return await entryPoint(event);
 }
