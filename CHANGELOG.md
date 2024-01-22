@@ -1,3 +1,9 @@
+# [1.1.0-alpha.6](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.5...v1.1.0-alpha.6) (2024-01-22)
+
+### Bug Fixes
+
+- additional public certificates for googleapis ([b9d2233](https://github.com/Achneoder/l-fen/commit/b9d2233831259a9f794ccf42c77d76084a4f98bb))
+
 # [1.1.0-alpha.5](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.4...v1.1.0-alpha.5) (2024-01-22)
 
 ### Bug Fixes
