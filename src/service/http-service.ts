@@ -68,7 +68,7 @@ export class HttpService extends Service<HttpServiceRequest, HttpServiceResponse
   }
 
   private addToLog(uid: string, log: string): void {
-    if (this.logs[uid]) {
+    if (!this.logs[uid]) {
       this.logs[uid] = [];
     }
     this.logs[uid].push(log);
