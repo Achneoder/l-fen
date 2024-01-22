@@ -120,7 +120,7 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
     JSON.stringify(requestData.data),
     { label: 'bootHttpService' }
   );
-  Object.values(functionRequest.headers).forEach(([headerKey, headerValue]) => {
+  Object.entries(functionRequest.headers).forEach(([headerKey, headerValue]) => {
     scope.set(headerKey, headerValue);
     logger.debug(
       'set header %s = %s for %s',
