@@ -1,3 +1,19 @@
+# [1.1.0](https://github.com/Achneoder/l-fen/compare/v1.0.7...v1.1.0) (2024-01-23)
+
+### Bug Fixes
+
+- additional public certificates for googleapis ([b9d2233](https://github.com/Achneoder/l-fen/commit/b9d2233831259a9f794ccf42c77d76084a4f98bb))
+- **Bootloader:** proper iterate HTTP headers ([5d484af](https://github.com/Achneoder/l-fen/commit/5d484af8a7e2d8c5a1d689c9d0910452ceeff4e8))
+- **HTTP Function:** extract http response from logs instead of using last log ([a4cc445](https://github.com/Achneoder/l-fen/commit/a4cc4459a9d675fff61a7ca12e7fbbe5e1b2ce86))
+- **HTTP Function:** return correct response ([55f9a2c](https://github.com/Achneoder/l-fen/commit/55f9a2c72e9c780aa7ecb1a4e88a4f9e2fb65958))
+- **HTTP Service:** ensure that logs array exists ([a774b5a](https://github.com/Achneoder/l-fen/commit/a774b5a6c42a64390fc8fd872b0135f9520366c4))
+- **HTTP Service:** ignore content-length header ([b9c2b00](https://github.com/Achneoder/l-fen/commit/b9c2b00cb181270372cd41ae8fa31680b4066865))
+- **http:** find service by checking request url to start with services name ([24e3f73](https://github.com/Achneoder/l-fen/commit/24e3f7345c527c747e7f021f57ad1df19451061b))
+
+### Features
+
+- **extensions:** load custom extensions ([4042024](https://github.com/Achneoder/l-fen/commit/40420242bd7f31208e9c0205312bc86dc821d8d7))
+
 # [1.1.0-alpha.18](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.17...v1.1.0-alpha.18) (2024-01-22)
 
 # [1.1.0-alpha.17](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.16...v1.1.0-alpha.17) (2024-01-22)
