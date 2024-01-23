@@ -1,3 +1,12 @@
+## [1.1.2](https://github.com/Achneoder/l-fen/compare/v1.1.1...v1.1.2) (2024-01-23)
+
+### Bug Fixes
+
+- **deps:** update dependency @grpc/grpc-js to v1.9.14 ([8b995c7](https://github.com/Achneoder/l-fen/commit/8b995c71b58c36371aa3e3ee7b2693261b3ee049))
+- **deps:** update dependency glob to v9.3.5 ([2d72b7a](https://github.com/Achneoder/l-fen/commit/2d72b7a6b22c31d86b168eaf5a7c368d2ca394f4))
+- **deps:** update dependency supertest to v6.3.4 ([c5518b3](https://github.com/Achneoder/l-fen/commit/c5518b36bc45a448b69db1f9691a4f4f77b5182b))
+- handle updated @grpc/grpc-js ([d4a0b38](https://github.com/Achneoder/l-fen/commit/d4a0b380cccfac646c0fbcdb86869ea22f0f4adb))
+
 ## [1.1.1](https://github.com/Achneoder/l-fen/compare/v1.1.0...v1.1.1) (2024-01-23)
 
 ### Bug Fixes
