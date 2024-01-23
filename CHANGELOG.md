@@ -1,3 +1,9 @@
+# [1.1.0-alpha.19](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.18...v1.1.0-alpha.19) (2024-01-23)
+
+### Bug Fixes
+
+- **HTTP Service:** ignore content-length header ([b9c2b00](https://github.com/Achneoder/l-fen/commit/b9c2b00cb181270372cd41ae8fa31680b4066865))
+
 # [1.1.0-alpha.18](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.17...v1.1.0-alpha.18) (2024-01-22)
 
 # [1.1.0-alpha.17](https://github.com/Achneoder/l-fen/compare/v1.1.0-alpha.16...v1.1.0-alpha.17) (2024-01-22)
