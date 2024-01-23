@@ -121,6 +121,10 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
     { label: 'bootHttpService' }
   );
   Object.entries(functionRequest.headers).forEach(([headerKey, headerValue]) => {
+    if (headerKey === 'content-length') {
+      // we have to skip content-length since the value might not match anymore and result in not processing requests with bodies.
+      return;
+    }
     scope.set(headerKey, headerValue);
     logger.debug(
       'set header %s = %s for %s',
@@ -136,15 +140,6 @@ async function bootHttpService(argv: BootloaderArgs, serviceConfig: ServiceConfi
     logger.debug('sending post request to %s with data %s', event.path, requestData.data);
     scope = scope.send(requestData.data);
   }
-  Object.entries(functionRequest.headers).forEach(([headerKey, headerValue]) => {
-    scope = scope.set(headerKey, headerValue);
-    logger.debug(
-      'set header %s = %s for %s',
-      headerKey,
-      headerValue,
-      `${functionRequest.method.toUpperCase()} ${[serviceConfig.name, event.path].filter((v) => !!v).join('/')}`
-    );
-  });
   const response = await scope;
   // we need the plain JSON as a string in stdout, so we use the good ol' console.log
   console.log(
