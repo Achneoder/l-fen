@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/Achneoder/l-fen/compare/v1.1.0...v1.1.1) (2024-01-23)
+
+### Bug Fixes
+
+- **deps:** update dependency @google-cloud/pubsub to v3.7.5 ([00d3685](https://github.com/Achneoder/l-fen/commit/00d36853a19edba1cc505a0234954664dbd4a444))
+
 # [1.1.0](https://github.com/Achneoder/l-fen/compare/v1.0.7...v1.1.0) (2024-01-23)
 
 ### Bug Fixes
