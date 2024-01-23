@@ -22,14 +22,12 @@ import {
   UpdateTopicRequest
 } from '../../../types/protos/google/pubsub/v1/pubsub_pb';
 import { PubSubServiceEvent } from '../../../types/service-event.interface';
+import { sendUnaryData, ServerUnaryCall } from '@grpc/grpc-js';
 
 export class PublisherServer implements IPublisherServer {
   [name: string]: import('@grpc/grpc-js').UntypedHandleCall;
 
-  publish(
-    call: grpc.ServerUnaryCall<PublishRequest, PublishResponse>,
-    callback: grpc.sendUnaryData<PublishResponse>
-  ): void {
+  publish(call: ServerUnaryCall<PublishRequest, PublishResponse>, callback: sendUnaryData<PublishResponse>): void {
     const logger = Logger.getLogger();
 
     const topic = call.request.getTopic();
@@ -57,49 +55,49 @@ export class PublisherServer implements IPublisherServer {
     callback(null, response);
   }
 
-  createTopic(call: grpc.ServerUnaryCall<Topic, Topic>, callback: grpc.sendUnaryData<Topic>) {
+  createTopic(call: ServerUnaryCall<Topic, Topic>, callback: sendUnaryData<Topic>) {
     throw new Error('not yet implemented');
   }
 
-  updateTopic(call: grpc.ServerUnaryCall<UpdateTopicRequest, Topic>, callback: grpc.sendUnaryData<Topic>) {
+  updateTopic(call: ServerUnaryCall<UpdateTopicRequest, Topic>, callback: sendUnaryData<Topic>) {
     throw new Error('not yet implemented');
   }
 
-  getTopic(call: grpc.ServerUnaryCall<GetTopicRequest, Topic>, callback: grpc.sendUnaryData<Topic>) {
+  getTopic(call: ServerUnaryCall<GetTopicRequest, Topic>, callback: sendUnaryData<Topic>) {
     throw new Error('not yet implemented');
   }
 
   listTopics(
-    call: grpc.ServerUnaryCall<ListTopicsRequest, ListTopicsResponse>,
-    callback: grpc.sendUnaryData<ListTopicsResponse>
+    call: ServerUnaryCall<ListTopicsRequest, ListTopicsResponse>,
+    callback: sendUnaryData<ListTopicsResponse>
   ) {
     throw new Error('not yet implemented');
   }
 
   listTopicSubscriptions(
-    call: grpc.ServerUnaryCall<ListTopicSubscriptionsRequest, ListTopicSubscriptionsResponse>,
-    callback: grpc.sendUnaryData<ListTopicSubscriptionsResponse>
+    call: ServerUnaryCall<ListTopicSubscriptionsRequest, ListTopicSubscriptionsResponse>,
+    callback: sendUnaryData<ListTopicSubscriptionsResponse>
   ) {
     throw new Error('not yet implemented');
   }
 
   listTopicSnapshots(
-    call: grpc.ServerUnaryCall<ListTopicSnapshotsRequest, ListTopicSnapshotsResponse>,
-    callback: grpc.sendUnaryData<ListTopicSnapshotsResponse>
+    call: ServerUnaryCall<ListTopicSnapshotsRequest, ListTopicSnapshotsResponse>,
+    callback: sendUnaryData<ListTopicSnapshotsResponse>
   ) {
     throw new Error('not yet implemented');
   }
 
   deleteTopic(
-    call: grpc.ServerUnaryCall<DeleteTopicRequest, google_protobuf_empty_pb.Empty>,
-    callback: grpc.sendUnaryData<google_protobuf_empty_pb.Empty>
+    call: ServerUnaryCall<DeleteTopicRequest, google_protobuf_empty_pb.Empty>,
+    callback: sendUnaryData<google_protobuf_empty_pb.Empty>
   ) {
     throw new Error('not yet implemented');
   }
 
   detachSubscription(
-    call: grpc.ServerUnaryCall<DetachSubscriptionRequest, DetachSubscriptionResponse>,
-    callback: grpc.sendUnaryData<DetachSubscriptionResponse>
+    call: ServerUnaryCall<DetachSubscriptionRequest, DetachSubscriptionResponse>,
+    callback: sendUnaryData<DetachSubscriptionResponse>
   ) {
     throw new Error('not yet implemented');
   }
