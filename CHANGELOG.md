@@ -1,3 +1,9 @@
+## [1.1.3](https://github.com/Achneoder/l-fen/compare/v1.1.2...v1.1.3) (2024-02-04)
+
+### Bug Fixes
+
+- **extensions:** apply extensions path relative from l-fen execution path ([5487f6d](https://github.com/Achneoder/l-fen/commit/5487f6d6284c527c1905b34a78ba660f1809f438))
+
 ## [1.1.2](https://github.com/Achneoder/l-fen/compare/v1.1.1...v1.1.2) (2024-01-23)
 
 ### Bug Fixes
