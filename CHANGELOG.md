@@ -1,3 +1,9 @@
+## [1.1.4](https://github.com/Achneoder/l-fen/compare/v1.1.3...v1.1.4) (2024-03-19)
+
+### Bug Fixes
+
+- remove postinstall ([04b7de7](https://github.com/Achneoder/l-fen/commit/04b7de7bf77dd6404a059cad632f723458bf33dc))
+
 ## [1.1.3](https://github.com/Achneoder/l-fen/compare/v1.1.2...v1.1.3) (2024-02-04)
 
 ### Bug Fixes
