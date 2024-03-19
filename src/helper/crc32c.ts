@@ -1,5 +1,4 @@
-const crc = require('fast-crc32c');
-import * as fs from 'fs';
+import { CRC32C } from '@google-cloud/storage';
 
 /**
  * Calculate the CRC32C string for a file.
@@ -7,15 +6,5 @@ import * as fs from 'fs';
  * @returns
  */
 export function calculate(filePath: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    let crc32c;
-    fs.createReadStream(filePath)
-      .on('error', (err) => reject(err))
-      .on('data', function (chunk) {
-        crc32c = crc.calculate(chunk, crc32c || 0);
-      })
-      .on('end', function () {
-        resolve(Buffer.from([crc32c]).toString('base64'));
-      });
-  });
+  return CRC32C.fromFile(filePath).then((crc: CRC32C) => crc.toString());
 }
