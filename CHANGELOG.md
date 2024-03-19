@@ -1,3 +1,13 @@
+# [1.2.0-beta.1](https://github.com/Achneoder/l-fen/compare/v1.1.3...v1.2.0-beta.1) (2024-03-19)
+
+### Bug Fixes
+
+- remove postinstall ([04b7de7](https://github.com/Achneoder/l-fen/commit/04b7de7bf77dd6404a059cad632f723458bf33dc))
+
+### Features
+
+- **Storage:** handle non-existing files and buckets when getting a single file ([ff85cc0](https://github.com/Achneoder/l-fen/commit/ff85cc01d10d0df1c712dccf38a5ede5fbba4997))
+
 ## [1.1.3](https://github.com/Achneoder/l-fen/compare/v1.1.2...v1.1.3) (2024-02-04)
 
 ### Bug Fixes
