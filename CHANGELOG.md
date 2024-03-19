@@ -1,3 +1,9 @@
+# [1.2.0-beta.3](https://github.com/Achneoder/l-fen/compare/v1.2.0-beta.2...v1.2.0-beta.3) (2024-03-19)
+
+### Bug Fixes
+
+- remove old crc32c prefix ([bf33005](https://github.com/Achneoder/l-fen/commit/bf33005cc9300ebc0928f49a9ad0bd691e9b876a))
+
 # [1.2.0-beta.2](https://github.com/Achneoder/l-fen/compare/v1.2.0-beta.1...v1.2.0-beta.2) (2024-03-19)
 
 # [1.2.0-beta.1](https://github.com/Achneoder/l-fen/compare/v1.1.3...v1.2.0-beta.1) (2024-03-19)
