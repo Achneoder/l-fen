@@ -56,7 +56,7 @@ async function getFileAsGcpObject(bucket: string, localFilePath: string): Promis
     updated: stats.mtime.toISOString(),
     size: stats.size,
     md5Hash: Buffer.from(md5File.sync(localFilePath)).toString('base64'),
-    crc32c: '0000' + (await calculate(localFilePath)), // for some reason, google calls substr(4) on crc32c
+    crc32c: await calculate(localFilePath),
     ...metadata
   };
 }
