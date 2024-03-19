@@ -135,7 +135,7 @@ It's really nothing else like a small CLI tool, that expects certain arguments, 
 
 For bucket and Pub/Sub Functions, it's quite straight forward. It `requires()` the Functions JS file, mapping the payload to the corresponding object and calling the `entryPoint` method with that object.
 
-In case of an HTTP Function, the bootloader makes use of [express](https://www.npmjs.com/package/express) and [SuperTest](https://www.npmjs.com/package/supertest) create a proper request and handle stuff like different HTTP methods and headers.
+In case of an HTTP Function, the bootloader makes use of [express](https://www.npmjs.com/package/express) and [SuperTest](https://www.npmjs.com/package/supertest) to create a proper request and handle stuff like different HTTP methods and headers.
 
 The orchestrator is loading the `.fenrc.json`, managing all Functions, providing some basic setup like configuring a fake service account and file watcher on the specified `storageDir` and start the HTTP proxy.
 

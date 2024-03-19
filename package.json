@@ -4,7 +4,6 @@
   "description": "sandbox to simulate full serverless function environment",
   "main": "lib/index.js",
   "scripts": {
-    "postinstall": "npx simple-git-hooks",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:proto": ". ./scripts/proto-build.sh",
     "build": "npm run build:proto && npx tsc",

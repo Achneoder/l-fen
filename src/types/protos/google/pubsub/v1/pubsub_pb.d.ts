@@ -492,6 +492,11 @@ export class Subscription extends jspb.Message {
   clearBigqueryConfig(): void;
   getBigqueryConfig(): BigQueryConfig | undefined;
   setBigqueryConfig(value?: BigQueryConfig): Subscription;
+
+  hasCloudStorageConfig(): boolean;
+  clearCloudStorageConfig(): void;
+  getCloudStorageConfig(): CloudStorageConfig | undefined;
+  setCloudStorageConfig(value?: CloudStorageConfig): Subscription;
   getAckDeadlineSeconds(): number;
   setAckDeadlineSeconds(value: number): Subscription;
   getRetainAckedMessages(): boolean;
@@ -551,6 +556,7 @@ export namespace Subscription {
     topic: string;
     pushConfig?: PushConfig.AsObject;
     bigqueryConfig?: BigQueryConfig.AsObject;
+    cloudStorageConfig?: CloudStorageConfig.AsObject;
     ackDeadlineSeconds: number;
     retainAckedMessages: boolean;
     messageRetentionDuration?: google_protobuf_duration_pb.Duration.AsObject;
@@ -659,7 +665,18 @@ export class PushConfig extends jspb.Message {
   getOidcToken(): PushConfig.OidcToken | undefined;
   setOidcToken(value?: PushConfig.OidcToken): PushConfig;
 
+  hasPubsubWrapper(): boolean;
+  clearPubsubWrapper(): void;
+  getPubsubWrapper(): PushConfig.PubsubWrapper | undefined;
+  setPubsubWrapper(value?: PushConfig.PubsubWrapper): PushConfig;
+
+  hasNoWrapper(): boolean;
+  clearNoWrapper(): void;
+  getNoWrapper(): PushConfig.NoWrapper | undefined;
+  setNoWrapper(value?: PushConfig.NoWrapper): PushConfig;
+
   getAuthenticationMethodCase(): PushConfig.AuthenticationMethodCase;
+  getWrapperCase(): PushConfig.WrapperCase;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PushConfig.AsObject;
@@ -677,6 +694,8 @@ export namespace PushConfig {
 
     attributesMap: Array<[string, string]>;
     oidcToken?: PushConfig.OidcToken.AsObject;
+    pubsubWrapper?: PushConfig.PubsubWrapper.AsObject;
+    noWrapper?: PushConfig.NoWrapper.AsObject;
   };
 
   export class OidcToken extends jspb.Message {
@@ -702,9 +721,50 @@ export namespace PushConfig {
     };
   }
 
+  export class PubsubWrapper extends jspb.Message {
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): PubsubWrapper.AsObject;
+    static toObject(includeInstance: boolean, msg: PubsubWrapper): PubsubWrapper.AsObject;
+    static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
+    static extensionsBinary: { [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message> };
+    static serializeBinaryToWriter(message: PubsubWrapper, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): PubsubWrapper;
+    static deserializeBinaryFromReader(message: PubsubWrapper, reader: jspb.BinaryReader): PubsubWrapper;
+  }
+
+  export namespace PubsubWrapper {
+    export type AsObject = {};
+  }
+
+  export class NoWrapper extends jspb.Message {
+    getWriteMetadata(): boolean;
+    setWriteMetadata(value: boolean): NoWrapper;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): NoWrapper.AsObject;
+    static toObject(includeInstance: boolean, msg: NoWrapper): NoWrapper.AsObject;
+    static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
+    static extensionsBinary: { [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message> };
+    static serializeBinaryToWriter(message: NoWrapper, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): NoWrapper;
+    static deserializeBinaryFromReader(message: NoWrapper, reader: jspb.BinaryReader): NoWrapper;
+  }
+
+  export namespace NoWrapper {
+    export type AsObject = {
+      writeMetadata: boolean;
+    };
+  }
+
   export enum AuthenticationMethodCase {
     AUTHENTICATION_METHOD_NOT_SET = 0,
     OIDC_TOKEN = 3
+  }
+
+  export enum WrapperCase {
+    WRAPPER_NOT_SET = 0,
+    PUBSUB_WRAPPER = 4,
+    NO_WRAPPER = 5
   }
 }
 
@@ -745,6 +805,106 @@ export namespace BigQueryConfig {
     PERMISSION_DENIED = 2,
     NOT_FOUND = 3,
     SCHEMA_MISMATCH = 4
+  }
+}
+
+export class CloudStorageConfig extends jspb.Message {
+  getBucket(): string;
+  setBucket(value: string): CloudStorageConfig;
+  getFilenamePrefix(): string;
+  setFilenamePrefix(value: string): CloudStorageConfig;
+  getFilenameSuffix(): string;
+  setFilenameSuffix(value: string): CloudStorageConfig;
+
+  hasTextConfig(): boolean;
+  clearTextConfig(): void;
+  getTextConfig(): CloudStorageConfig.TextConfig | undefined;
+  setTextConfig(value?: CloudStorageConfig.TextConfig): CloudStorageConfig;
+
+  hasAvroConfig(): boolean;
+  clearAvroConfig(): void;
+  getAvroConfig(): CloudStorageConfig.AvroConfig | undefined;
+  setAvroConfig(value?: CloudStorageConfig.AvroConfig): CloudStorageConfig;
+
+  hasMaxDuration(): boolean;
+  clearMaxDuration(): void;
+  getMaxDuration(): google_protobuf_duration_pb.Duration | undefined;
+  setMaxDuration(value?: google_protobuf_duration_pb.Duration): CloudStorageConfig;
+  getMaxBytes(): number;
+  setMaxBytes(value: number): CloudStorageConfig;
+  getState(): CloudStorageConfig.State;
+  setState(value: CloudStorageConfig.State): CloudStorageConfig;
+
+  getOutputFormatCase(): CloudStorageConfig.OutputFormatCase;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CloudStorageConfig.AsObject;
+  static toObject(includeInstance: boolean, msg: CloudStorageConfig): CloudStorageConfig.AsObject;
+  static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
+  static extensionsBinary: { [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message> };
+  static serializeBinaryToWriter(message: CloudStorageConfig, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CloudStorageConfig;
+  static deserializeBinaryFromReader(message: CloudStorageConfig, reader: jspb.BinaryReader): CloudStorageConfig;
+}
+
+export namespace CloudStorageConfig {
+  export type AsObject = {
+    bucket: string;
+    filenamePrefix: string;
+    filenameSuffix: string;
+    textConfig?: CloudStorageConfig.TextConfig.AsObject;
+    avroConfig?: CloudStorageConfig.AvroConfig.AsObject;
+    maxDuration?: google_protobuf_duration_pb.Duration.AsObject;
+    maxBytes: number;
+    state: CloudStorageConfig.State;
+  };
+
+  export class TextConfig extends jspb.Message {
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): TextConfig.AsObject;
+    static toObject(includeInstance: boolean, msg: TextConfig): TextConfig.AsObject;
+    static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
+    static extensionsBinary: { [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message> };
+    static serializeBinaryToWriter(message: TextConfig, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): TextConfig;
+    static deserializeBinaryFromReader(message: TextConfig, reader: jspb.BinaryReader): TextConfig;
+  }
+
+  export namespace TextConfig {
+    export type AsObject = {};
+  }
+
+  export class AvroConfig extends jspb.Message {
+    getWriteMetadata(): boolean;
+    setWriteMetadata(value: boolean): AvroConfig;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): AvroConfig.AsObject;
+    static toObject(includeInstance: boolean, msg: AvroConfig): AvroConfig.AsObject;
+    static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
+    static extensionsBinary: { [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message> };
+    static serializeBinaryToWriter(message: AvroConfig, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): AvroConfig;
+    static deserializeBinaryFromReader(message: AvroConfig, reader: jspb.BinaryReader): AvroConfig;
+  }
+
+  export namespace AvroConfig {
+    export type AsObject = {
+      writeMetadata: boolean;
+    };
+  }
+
+  export enum State {
+    STATE_UNSPECIFIED = 0,
+    ACTIVE = 1,
+    PERMISSION_DENIED = 2,
+    NOT_FOUND = 3
+  }
+
+  export enum OutputFormatCase {
+    OUTPUT_FORMAT_NOT_SET = 0,
+    TEXT_CONFIG = 4,
+    AVRO_CONFIG = 5
   }
 }
 
