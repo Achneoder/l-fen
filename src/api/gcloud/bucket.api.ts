@@ -86,40 +86,73 @@ export function mockEndoints(): void {
     .persist()
     .get(/^\/storage\/v1\/b\/[^/]+\/o\/[^/]+$/)
     .query(true)
-    .reply(
-      200,
-      function (uri: string, body: nock.Body, cb) {
-        const [bucket, fileName] = extractFromUri(uri, [4, 6]);
-        const decodedFileName = decodeURIComponent(fileName);
-        const bucketPath =
-          (config.storageDir.endsWith('/') ? config.storageDir : config.storageDir + '/') + bucket + '/';
+    .reply(function (uri: string, body: nock.Body, cb) {
+      const [bucket, fileName] = extractFromUri(uri, [4, 6]);
+      const decodedFileName = decodeURIComponent(fileName);
+      const bucketPath = (config.storageDir.endsWith('/') ? config.storageDir : config.storageDir + '/') + bucket + '/';
 
-        const req = this.req;
-        const parsedUri = new URL(req.path, 'https://storage.googleapis.com');
-        // ?alt=media indicates that the file should be returned as a stream
-        if (parsedUri.searchParams.get('alt') === 'media') {
-          calculate(bucketPath + decodedFileName).then((crc32cString: string) => {
-            req['crc32c'] = '0000' + crc32cString;
-            cb(null, fs.readFileSync(bucketPath + decodedFileName));
-          });
-        } else {
-          getFileAsGcpObject(bucket, bucketPath + decodedFileName).then((obj: GcpObject) => {
-            cb(null, obj);
-          });
-        }
-      },
-      {
-        'x-goog-hash': (req) => {
-          const parsedUri = new URL(req.path, 'https://storage.googleapis.com');
-          let crc32c = req['crc32c'];
-          // ?alt=media indicates that the file should be returned as a stream, if not, the meatadata are requested and no crc32c has to be calculated
-          if (parsedUri.searchParams.get('alt') !== 'media') {
-            crc32c = '';
+      const completeFilePath = bucketPath + decodedFileName;
+      const req = this.req;
+      const parsedUri = new URL(req.path, 'https://storage.googleapis.com');
+
+      if (!fs.existsSync(bucketPath)) {
+        cb(null, [
+          404,
+          {
+            error: {
+              code: 404,
+              message: 'The specified bucket does not exist.',
+              errors: [
+                {
+                  message: 'The specified bucket does not exist.',
+                  domain: 'global',
+                  reason: 'notFound'
+                }
+              ]
+            }
           }
-          return `crc32c=${crc32c}`;
-        }
+        ]);
+      } else if (!fs.existsSync(completeFilePath)) {
+        cb(null, [
+          404,
+          {
+            error: {
+              code: 404,
+              message: `No such object: ${bucket}/${decodedFileName}`,
+              errors: [
+                {
+                  message: `No such object: ${bucket}/${decodedFileName}`,
+                  domain: 'global',
+                  reason: 'notFound'
+                }
+              ]
+            }
+          }
+        ]);
+      } else if (parsedUri.searchParams.get('alt') === 'media') {
+        // ?alt=media indicates that the file should be returned as a stream
+        calculate(completeFilePath).then((crc32cString: string) => {
+          cb(null, [
+            200,
+            fs.readFileSync(completeFilePath),
+            {
+              // ?alt=media indicates that the file should be returned as a stream, if not, the meatadata are requested and no crc32c has to be calculated
+              'x-goog-hash': `crc32c=0000${crc32cString}`
+            }
+          ]);
+        });
+      } else {
+        getFileAsGcpObject(bucket, completeFilePath).then((obj: GcpObject) => {
+          cb(null, [
+            200,
+            obj,
+            {
+              'x-goog-hash': `crc32c=`
+            }
+          ]);
+        });
       }
-    );
+    });
 
   // mock storing single file
   // see https://cloud.google.com/storage/docs/json_api/v1/objects/insert
