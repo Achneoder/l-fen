@@ -194,4 +194,56 @@ export function mockEndoints(): void {
         getFileAsGcpObject(bucket, filePath).then((obj: GcpObject) => cb(null, obj));
       }
     });
+
+  // mock deletion of single file
+  // see https://cloud.google.com/storage/docs/json_api/v1/objects/delete
+  nock('https://storage.googleapis.com:443', { encodedQueryParams: true })
+    .delete(/^\/storage\/v1\/b\/[^/]+\/o\/[^/]+$/)
+    .query({})
+    .reply(function (uri: string, body: nock.Body, cb) {
+      const [bucket, fileName] = extractFromUri(uri, [4, 6]);
+      const decodedFileName = decodeURIComponent(fileName);
+      const bucketPath = (config.storageDir.endsWith('/') ? config.storageDir : config.storageDir + '/') + bucket + '/';
+
+      const completeFilePath = bucketPath + decodedFileName;
+
+      if (!fs.existsSync(bucketPath)) {
+        cb(null, [
+          404,
+          {
+            error: {
+              code: 404,
+              message: 'The specified bucket does not exist.',
+              errors: [
+                {
+                  message: 'The specified bucket does not exist.',
+                  domain: 'global',
+                  reason: 'notFound'
+                }
+              ]
+            }
+          }
+        ]);
+      } else if (!fs.existsSync(completeFilePath)) {
+        cb(null, [
+          404,
+          {
+            error: {
+              code: 404,
+              message: `No such object: ${bucket}/${decodedFileName}`,
+              errors: [
+                {
+                  message: `No such object: ${bucket}/${decodedFileName}`,
+                  domain: 'global',
+                  reason: 'notFound'
+                }
+              ]
+            }
+          }
+        ]);
+      } else {
+        fs.unlinkSync(completeFilePath);
+        cb(null, [204]);
+      }
+    });
 }
