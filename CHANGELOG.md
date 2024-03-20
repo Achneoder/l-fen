@@ -1,3 +1,9 @@
+# [1.2.0-beta.4](https://github.com/Achneoder/l-fen/compare/v1.2.0-beta.3...v1.2.0-beta.4) (2024-03-20)
+
+### Features
+
+- **Storage:** add deletion of files ([a3cf419](https://github.com/Achneoder/l-fen/commit/a3cf4196a9f52bcf84c45db913bfb280871386f2))
+
 # [1.2.0-beta.3](https://github.com/Achneoder/l-fen/compare/v1.2.0-beta.2...v1.2.0-beta.3) (2024-03-19)
 
 ### Bug Fixes
